@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llShowFId"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:orientation="vertical">
+
+    <com.example.lcc.mykitchen.view.CircleImageView
+        android:id="@+id/img_show_foodHeader"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/header0" />
+
+    <TextView
+        android:id="@+id/tvShowFoodNameId"
+        style="@style/inflater_showf_listview_tv"
+        android:layout_marginTop="5dp"
+        android:text="美味面条"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tvShowFoodContentId"
+        style="@style/inflater_showf_listview_tv"
+        android:layout_marginTop="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="面条这样做，我连饭都不想吃了" />
+
+    <TextView
+        android:id="@+id/tvShowKiterNameId"
+        style="@style/inflater_showf_listview_tv"
+        android:layout_marginTop="5dp"
+        android:text="由美美创建"
+        android:textSize="12sp" />
+
+
+</LinearLayout>

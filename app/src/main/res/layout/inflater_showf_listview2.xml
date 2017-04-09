@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="280dp">
+
+            <ImageView
+                android:padding="10dp"
+                android:id="@+id/img_item2"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/bg_img"/>
+        <RelativeLayout
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom">
+            <com.example.lcc.mykitchen.view.CircleImageView
+                android:id="@+id/img_item2_touxiang"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/logo"/>
+            <TextView
+                android:id="@+id/tv_item2_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:layout_marginLeft="10dp"
+                android:layout_toEndOf="@+id/img_item2_touxiang"
+                android:text="小艾"/>
+            <TextView
+                android:id="@+id/tv_item2_intro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_below="@+id/tv_item2_name"
+                android:layout_toEndOf="@+id/img_item2_touxiang"
+                android:text="小艾"/>
+        </RelativeLayout>
+
+    </FrameLayout>
+    <TextView
+        android:id="@+id/tv_item2_foodName"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:text="菜名"/>
+</LinearLayout>

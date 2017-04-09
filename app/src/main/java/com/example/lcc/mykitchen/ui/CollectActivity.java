@@ -1,0 +1,44 @@
+package com.example.lcc.mykitchen.ui;
+
+import android.os.Bundle;
+import com.example.lcc.mykitchen.adapter.CollectFoodAdapter;
+import com.example.lcc.mykitchen.entity.CollectFood;
+import com.example.lcc.mykitchen.utils.DBUtils;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+
+import com.example.lcc.mykitchen.R;
+
+import java.util.List;
+
+public class CollectActivity extends MyBaseActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_collect);
+        //初始化界面
+        initialUI();
+    }
+
+    @Override
+    public void initialUI() {
+        //初始化ActionBar
+        actionBar = (LinearLayout)findViewById(R.id.llActionbarId);
+        initActionbar(R.drawable.go_back_normal, "您的收藏", R.drawable.collect_delete);
+        //初始化ListView
+        initListView();
+    }
+
+    private void initListView() {
+        ListView collectListview = (ListView) findViewById(R.id.listview_myf_collectId);
+        CollectFoodAdapter adapter = new CollectFoodAdapter(this);
+        collectListview.setAdapter(adapter);
+        DBUtils dbUtils=new DBUtils(this,1);
+        List<CollectFood> list = dbUtils.queryFood();
+        adapter.addDate(list, true);
+    }
+
+
+
+}

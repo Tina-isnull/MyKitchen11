@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <RelativeLayout
+        android:id="@+id/rl_shareF_id"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <com.example.lcc.mykitchen.view.CircleImageView
+            android:id="@+id/img_sharef_headerid"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/default_header" />
+
+        <TextView
+            android:id="@+id/tv_sharef_nameid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="8dp"
+            android:layout_toEndOf="@id/img_sharef_headerid"
+            android:text="晶晶" />
+
+        <TextView
+            android:id="@+id/tv_sharef_timeid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@id/img_sharef_headerid"
+            android:text="7分钟之前发布状态"
+            android:textSize="9sp" />
+
+        <ImageView
+            android:id="@+id/btn_sharef_focuid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/rec_follow" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_sharef_contendId"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_shareF_id"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="41dp"
+        android:text="我这是有多无聊。。。" />m
+
+    <FrameLayout
+        android:id="@+id/fl_share_pics"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tv_sharef_contendId"
+        android:layout_below="@+id/tv_sharef_contendId">
+
+        <com.example.lcc.mykitchen.view.NineGridLayout
+            android:id="@+id/rl_sharef_imgsId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.example.lcc.mykitchen.view.CustomImageView
+            android:id="@+id/rl_sharef_oneImgId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_shareItem_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/fl_share_pics"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_item_blog_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:drawableLeft="@drawable/ic_share"
+            android:gravity="center_vertical"
+            android:text="分享" />
+
+        <TextView
+            android:id="@+id/tv_item_blog_love"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:drawableLeft="@drawable/ic_love"
+            android:gravity="center_vertical"
+            android:text="0赞" />
+
+        <TextView
+            android:id="@+id/tv_item_blog_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_comment"
+            android:gravity="center_vertical"
+            android:text="评论" />
+    </LinearLayout>
+
+    <com.example.lcc.mykitchen.view.MyListVIew
+        android:id="@+id/list_comment"
+        android:background="#eeeeee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_shareItem_share"
+        android:layout_alignLeft="@+id/tv_sharef_contendId"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"/>
+
+</RelativeLayout>

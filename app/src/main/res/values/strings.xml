@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">私厨</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- 分享朋友圈-->
+    <string name="cancel">取消</string>
+    <string name="publish_empty_text">想说什么…</string>
+    <string name="take_photo">拍照</string>
+    <string name="select_from_local">从相册中选取</string>
+    <string name="title_activity_menu_add_content">MenuAddContentActivity</string>
+</resources>

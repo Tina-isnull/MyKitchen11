@@ -1,0 +1,94 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".fragment.MyFragment">
+
+    <include layout="@layout/include_actionbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="192dp"
+        android:background="@drawable/my_bg">
+
+        <com.example.lcc.mykitchen.view.CircleImageView
+            android:id="@+id/img_myf_headerId"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="60dp"
+            android:src="@drawable/header0" />
+
+        <TextView
+            android:id="@+id/tv_myf_nameId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_myf_headerId"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="晶晶" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rBtnMoneyId"
+                style="@style/my_rGBtn_style"
+                android:drawableTop="@drawable/one"
+                android:text="厨币" />
+
+            <RadioButton
+                android:id="@+id/rBtnFootId"
+                style="@style/my_rGBtn_style"
+                android:drawableTop="@drawable/two"
+                android:text="足迹"
+                android:checked="false" />
+
+            <RadioButton
+                android:id="@+id/rBtn_remenber_Id"
+                style="@style/my_rGBtn_style"
+                android:drawableTop="@drawable/three"
+                android:text="备忘录" />
+
+        </RadioGroup>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rBtnMakeId"
+                style="@style/my_rGBtn_style"
+                android:drawableTop="@drawable/four"
+                android:text="设置" />
+
+            <RadioButton
+                android:id="@+id/rBtnFocusId"
+                style="@style/my_rGBtn_style"
+                android:drawableTop="@drawable/five"
+                android:text="关注" />
+
+            <RadioButton
+                android:id="@+id/rBtnCollectId"
+                style="@style/my_rGBtn_style"
+                android:drawableTop="@drawable/six"
+                android:text="收藏" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+
+</LinearLayout>

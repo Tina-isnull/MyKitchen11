@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottemRbtnId"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="#ffffff"
+    android:orientation="horizontal">
+
+    <RadioButton
+        android:id="@+id/radio0"
+        style="@style/include_bottom_rGBtn"
+        android:checked="true"
+        android:drawableTop="@drawable/gbtn01_bottom_selector"
+        android:text="首页" />
+
+    <RadioButton
+        android:id="@+id/radio1"
+        style="@style/include_bottom_rGBtn"
+        android:drawableTop="@drawable/gbtn02_bottom_selector"
+        android:text="直播" />
+
+    <ImageView
+        android:id="@+id/radio4"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:paddingBottom="10dp"
+        android:onClick="addition_click"
+        android:src="@drawable/guide_plus" />
+
+
+    <RadioButton
+        android:id="@+id/radio2"
+        style="@style/include_bottom_rGBtn"
+        android:drawableTop="@drawable/gbtn03_bottom_selector"
+        android:text="分享" />
+
+    <RadioButton
+        android:id="@+id/radio3"
+        style="@style/include_bottom_rGBtn"
+        android:drawableTop="@drawable/gbtn04_bottom_selector"
+        android:text="我的" />
+
+
+</RadioGroup>

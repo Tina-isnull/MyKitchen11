@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/note_bg"
+    tools:context="com.example.lcc.mykitchen.notebook.AddDataActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#aaffffff">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="center"
+            android:text="添加备忘录"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn_node_saveId"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/note_save" />
+
+    </RelativeLayout>
+
+
+    <EditText
+        android:id="@+id/et_note_editId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="186dp"
+        android:paddingLeft="10dp"
+        android:background="#00000000"
+        android:textSize="25dp" />
+
+
+</RelativeLayout>

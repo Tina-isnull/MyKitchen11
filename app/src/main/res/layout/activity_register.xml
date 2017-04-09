@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/logo_bag"
+    tools:context=".ui.RegisterActivity">
+    <include
+        android:id="@+id/include_register_id"
+        layout="@layout/include_actionbar" />
+
+    <EditText
+        android:id="@+id/et_register_phoneId"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/include_register_id"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/shape_logo_userbag"
+        android:hint="请输入手机号"
+        android:paddingLeft="10dp" />
+
+    <View
+        android:id="@+id/view_register_id"
+        style="@style/line"
+        android:layout_below="@id/et_register_phoneId" />
+
+    <LinearLayout
+        android:id="@+id/ll_register_secretId"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/view_register_id"
+        android:background="@drawable/shape_logo_userbag"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/et_register_password"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_logo_userbag"
+            android:hint="请输入密码"
+            android:paddingLeft="10dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="26dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/eye_off" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_register_Id"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_below="@id/ll_register_secretId"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shape_logo_bag"
+        android:gravity="center"
+        android:text="登录" />
+</RelativeLayout>

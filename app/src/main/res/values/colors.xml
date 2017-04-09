@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="themeColor">#ffc000</color>
+    <color name="white">#ffffff</color>
+    <color name="ListViewBar">#f3f3f3</color>
+    <color name="bg">#eeeeee</color>
+    <color name="textColor">#3c3f41</color>
+    <color name="noteThemeColor">#e8e4a0</color>
+
+    <color name="black">#000000</color>
+    <color name="light_gray">#e1e1e1</color>
+    <color name="deep_gray">#394257</color>
+    <color name="border_gray">#d9dfe5</color>
+    <color name="bg_gray">#f6f7f8</color>
+    <color name="btn_gray">#d1d1d1</color>
+    <color name="glass_gall">#c2ebef</color>
+    <color name="light_blue">#87d0f2</color>
+    <color name="category_tab_text">#ff707070</color>
+    <color name="category_tab_highlight_text">#fffafafa</color>
+</resources>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/detials_bg">
+
+        <com.example.lcc.mykitchen.view.CircleImageView
+            android:id="@+id/img_list_header"
+            android:layout_width="190dp"
+            android:layout_height="190dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="45dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/header0" />
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/tv_list_header_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:padding="10dp"
+        android:text="哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/ListViewBar"
+        android:gravity="center"
+        android:text="- 材料 -"
+        android:textSize="40px" />
+
+    <TextView
+        android:id="@+id/tv_list_header_material"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text=" 啊哈哈哈哈哈" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/ListViewBar"
+        android:gravity="center"
+        android:text="- 烹饪步骤 -"
+        android:textSize="40px" />
+</LinearLayout>

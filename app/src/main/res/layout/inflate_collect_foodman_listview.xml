@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@color/white"
+   >
+    <ImageView
+            android:id="@+id/img_collecaty_headerId"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:padding="5dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/header0" />
+
+        <TextView
+            android:id="@+id/tv_collecaty_nameId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="12dp"
+            android:textSize="15sp"
+            android:layout_toEndOf="@id/img_collecaty_headerId"
+            android:text="晶晶" />
+
+        <TextView
+            android:id="@+id/tv_collecaty_introId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:paddingBottom="12dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@id/img_collecaty_headerId"
+            android:text="7分钟之前发布状态"
+            android:textSize="12sp" />
+    
+
+</RelativeLayout>

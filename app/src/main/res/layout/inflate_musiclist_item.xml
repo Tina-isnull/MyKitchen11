@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="60dp">
+
+    <com.example.lcc.mykitchen.view.CircleImageView
+        android:id="@+id/img_music_picId"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/ic_launcher"
+
+        app:border_color="#ffffff"
+        app:border_width="1dp" />
+
+    <TextView
+        android:id="@+id/tv_music_nameId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@id/img_music_picId"
+        android:text="歌名" />
+
+    <TextView
+        android:id="@+id/tv_music_singerId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@id/tv_music_nameId"
+        android:text="歌手" />
+
+    <TextView
+        android:id="@+id/tv_music_ciId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tv_music_nameId"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:text="词:" />
+
+    <TextView
+        android:id="@+id/tv_music_authorId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:layout_toEndOf="@id/tv_music_ciId"
+        android:text="词作者" />
+
+    <TextView
+        android:id="@+id/tv_music_quId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="30dp"
+        android:layout_toEndOf="@id/tv_music_authorId"
+        android:text="曲:" />
+
+    <TextView
+        android:id="@+id/tv_music_qAuthorId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:layout_toEndOf="@id/tv_music_quId"
+        android:text="曲作者" />
+
+    <TextView
+        android:id="@+id/tv_music_timeId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="5dp"
+        android:text="时间" />
+
+</RelativeLayout>

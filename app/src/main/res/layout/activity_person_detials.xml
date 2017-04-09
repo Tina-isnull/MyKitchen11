@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.lcc.mykitchen.ui.PersonDetialsActivity">
+    <include layout="@layout/include_actionbar" />
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:background="@drawable/my_bg"
+    android:orientation="vertical">
+    <com.example.lcc.mykitchen.view.CircleImageView
+        android:id="@+id/img_person_header"
+        android:layout_marginTop="90dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:src="@drawable/header0"/>
+    <TextView
+        android:id="@+id/tv_person_name"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="昵称"/>
+    <TextView
+        android:id="@+id/tv_person_intro"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="简介"/>
+</LinearLayout>
+    <TextView
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="我的作品"/>
+    <GridView
+        android:id="@+id/Grid_person_zuo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:verticalSpacing="10dp"
+        android:scrollbars="none"
+        android:numColumns="3"
+        android:background="#ffffff"
+        android:gravity="center"
+        android:horizontalSpacing="1dp"
+        >
+
+    </GridView>
+
+</LinearLayout>

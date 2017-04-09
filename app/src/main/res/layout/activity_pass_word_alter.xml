@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.lcc.mykitchen.make_children.passWordAlterActivity">
+
+    <include layout="@layout/include_actionbar"></include>
+
+    <EditText
+        android:id="@+id/et_oldPassId"
+        style="@style/et_style"
+        android:layout_width="match_parent"
+        android:hint="输入您原来的密码" />
+
+    <View style="@style/line"/>
+
+    <EditText
+        android:id="@+id/et_newPassId"
+        style="@style/et_style"
+        android:layout_width="match_parent"
+        android:hint="输入您原来的密码" />
+
+    <Button
+        android:id="@+id/btn_commitId"
+        android:layout_width="250dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:background="@color/themeColor"
+        android:text="修改"
+        android:textColor="@color/white" />
+
+
+</LinearLayout>

@@ -1,0 +1,53 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".fragment.ShareFragment">
+
+    <include layout="@layout/include_actionbar" />
+
+    <com.example.lcc.mykitchen.view.TabGroup
+        android:id="@+id/radioGroup1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/radio0"
+            style="@style/share_top_rGBtn"
+            android:checked="true"
+            android:text="广场" />
+
+        <RadioButton
+            android:id="@+id/radio1"
+            style="@style/share_top_rGBtn"
+            android:text="关注" />
+    </com.example.lcc.mykitchen.view.TabGroup>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPagerShareFID"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </android.support.v4.view.ViewPager>
+        <ImageView
+            android:id="@+id/img_share_cameraId"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/ic_talk_camera" />
+        <include
+            android:id="@+id/commnet_diaolog"
+            layout="@layout/comment_dialog" />
+
+
+    </FrameLayout>
+</LinearLayout>

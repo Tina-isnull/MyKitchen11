@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.MakeActivity">
+
+    <include layout="@layout/include_actionbar"></include>
+
+    <RelativeLayout
+        android:id="@+id/rl_make_countId"
+        style="@style/make_ll_style"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+
+        <TextView
+            style="@style/make_tv_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="账号设置" />
+
+        <ImageView
+            style="@style/make_img_style"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/next" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_make_passWordId"
+        style="@style/make_ll_style"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+
+        <TextView
+            style="@style/make_tv_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="密码设置" />
+
+        <ImageView
+            style="@style/make_img_style"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/next" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_make_cacheId"
+        style="@style/make_ll_style"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+
+        <TextView
+            style="@style/make_tv_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="清除缓存" />
+
+        <TextView
+            android:id="@+id/tv_make_clear"
+            style="@style/make_img_style"
+            android:layout_width="wrap_content"
+            android:layout_marginRight="15dp"
+            android:layout_height="wrap_content"
+             />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_make_aboutWeId"
+        style="@style/make_ll_style"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+
+        <TextView
+            style="@style/make_tv_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="关于我们" />
+
+        <ImageView
+            style="@style/make_img_style"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/next" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_make_logo"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:background="@color/themeColor"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:text="退出登录" />
+</LinearLayout>

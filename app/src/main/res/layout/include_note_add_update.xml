@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#66ffffff">
+
+    <Button
+        android:id="@+id/btn_node_deleteId"
+        android:layout_marginLeft="10dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/note_delete"/>
+
+    <Button
+        android:id="@+id/btn_node_saveId"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/note_save"
+        android:layout_marginRight="10dp"/>
+
+</RelativeLayout>
