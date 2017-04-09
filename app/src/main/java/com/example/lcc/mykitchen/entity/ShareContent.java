@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class ShareContent {
     private ShareFriends shareFriends;
-    private List<String> commentList;
+    private List<Comments> commentList;
 
     public ShareFriends getShareFriends() {
         return shareFriends;
@@ -17,11 +17,11 @@ public class ShareContent {
         this.shareFriends = shareFriends;
     }
 
-    public List<String> getCommentList() {
+    public List<Comments> getCommentList() {
         return commentList;
     }
 
-    public void setCommentList(List<String> commentList) {
+    public void setCommentList(List<Comments> commentList) {
         this.commentList = commentList;
     }
 }

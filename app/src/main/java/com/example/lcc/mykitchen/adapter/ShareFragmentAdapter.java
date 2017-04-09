@@ -1,5 +1,6 @@
 package com.example.lcc.mykitchen.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.lcc.mykitchen.MyApp;
 import com.example.lcc.mykitchen.R;
+import com.example.lcc.mykitchen.entity.Comments;
 import com.example.lcc.mykitchen.entity.ShareContent;
 import com.example.lcc.mykitchen.fragment.ShareFragment01;
 import com.example.lcc.mykitchen.view.MyListVIew;
@@ -31,6 +34,8 @@ import java.util.List;
 import com.example.lcc.mykitchen.adapter.MyBaseAdapter;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.DeleteListener;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
@@ -224,16 +229,57 @@ public class ShareFragmentAdapter extends MyBaseAdapter<ShareContent> {
 
             }
         });
-        Log.i("lcc=================>",shareItem.getCommentList().toString());
        // ArrayAdapter<String> adapter=new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,shareItem.getCommentList());
-        ArrayCommentAdapter adapter=new ArrayCommentAdapter(context);
-        viewHolder.commentList.setAdapter(adapter);
-        adapter.addDate(shareItem.getCommentList(),true);
-        adapter.notifyDataSetChanged();
+        final ArrayCommentAdapter cAdapter=new ArrayCommentAdapter(context);
+        viewHolder.commentList.setAdapter(cAdapter);
+        viewHolder.commentList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                String item=cAdapter.getItem(position).getContent();
+                int index=item.indexOf("回")-1;
+                String name=item.substring(0,index);
+                if(bmobUser.getUsername().equals(name)){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage("要删除评论吗")
+                            .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    cAdapter.removeData(shareItem.getCommentList().get(position));
+                                    Comments comment = new Comments();
+                                    comment.setObjectId(shareItem.getCommentList().get(position).getObjectId());
+                                    comment.delete(context,new DeleteListener() {
+
+
+                                        @Override
+                                        public void onSuccess() {
+                                            Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        @Override
+                                        public void onFailure(int i, String s) {
+
+                                        }
+                                    });
+                                }
+                            })
+                            .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            }).show();
+                }else{
+                    mSendDynamic.sendVisible(shareItem.getShareFriends().getObjectId(),name);
+                }
+
+
+            }
+        });
+
+        cAdapter.addDate(shareItem.getCommentList(),true);
+        cAdapter.notifyDataSetChanged();
         viewHolder.tvComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mSendDynamic.sendVisible(shareItem.getShareFriends().getObjectId());
+                mSendDynamic.sendVisible(shareItem.getShareFriends().getObjectId(),shareItem.getShareFriends().getUserInfo().getUsername());
 
             }
         });

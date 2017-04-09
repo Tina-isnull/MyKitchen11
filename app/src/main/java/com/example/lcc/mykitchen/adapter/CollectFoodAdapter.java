@@ -10,8 +10,10 @@ import android.widget.TextView;
 import com.example.lcc.mykitchen.R;
 
 import com.example.lcc.mykitchen.entity.CollectFood;
+import com.example.lcc.mykitchen.entity.CollectionFood;
+import com.example.lcc.mykitchen.manager.HttpRequestManager;
 
-public class CollectFoodAdapter extends MyBaseAdapter<CollectFood> {
+public class CollectFoodAdapter extends MyBaseAdapter<CollectionFood> {
 
 	public CollectFoodAdapter(Context context) {
 		super(context);
@@ -30,10 +32,14 @@ public class CollectFoodAdapter extends MyBaseAdapter<CollectFood> {
 		}else{
 			viewHolder=(ViewHolder) convertView.getTag();
 		}
-		CollectFood collect=getItem(position);
-		viewHolder.imgHeader.setImageResource(collect.getImgHeader());
-		viewHolder.name.setText(collect.getName());
-		viewHolder.intro.setText(collect.getIntroduce());
+		CollectionFood collect=getItem(position);
+		if(collect.getFoodDetails().getDetial().getAlbums()!=null&&collect.getFoodDetails().getDetial().getAlbums().size()>0){
+			HttpRequestManager.displayImage(collect.getFoodDetails().getDetial().getAlbums().get(0),viewHolder.imgHeader);
+		}else{
+			HttpRequestManager.displayImage(collect.getFoodDetails().getDetial().getBurden(),viewHolder.imgHeader);
+		}
+		viewHolder.name.setText(collect.getFoodDetails().getDetial().getTitle());
+		viewHolder.intro.setText(collect.getFoodDetails().getDetial().getImtro());
 		return convertView;
 	}
 

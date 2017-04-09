@@ -7,13 +7,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.lcc.mykitchen.R;
+import com.example.lcc.mykitchen.entity.Comments;
 import com.example.lcc.mykitchen.entity.UserInfo;
 import com.example.lcc.mykitchen.manager.HttpRequestManager;
 
 /**
  * Created by lcc on 2017/4/9.
  */
-public class ArrayCommentAdapter extends MyBaseAdapter<String> {
+public class ArrayCommentAdapter extends MyBaseAdapter<Comments> {
     public ArrayCommentAdapter(Context context) {
         super(context);
     }
@@ -29,7 +30,7 @@ public class ArrayCommentAdapter extends MyBaseAdapter<String> {
         }else{
             viewHolder=(ViewHolder) convertView.getTag();
         }
-        viewHolder.comment.setText(listData.get(position));
+        viewHolder.comment.setText(listData.get(position).getContent());
         return convertView;
     }
 

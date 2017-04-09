@@ -41,7 +41,7 @@ public class ShareFragment02 extends Fragment {
     private PullToRefreshListView listView;
     private ShareFragment01.sendDynamic send;
     private List<ShareContent> mShareContent;
-    private List<String> stringM;
+    private List<Comments> stringM;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -126,7 +126,7 @@ public class ShareFragment02 extends Fragment {
                             shareContent.setShareFriends(data);
                             for (Comments comment:Clist){
                                 if(comment.getShareId().equals(data.getObjectId())){
-                                    stringM.add(comment.getContent());
+                                    stringM.add(comment);
                                 }
                             }
                             shareContent.setCommentList(stringM);

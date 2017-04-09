@@ -7,12 +7,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.lcc.mykitchen.MyApp;
 import com.example.lcc.mykitchen.R;
 
 import com.example.lcc.mykitchen.adapter.FoodDetailAdapter;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.bmob.v3.listener.SaveListener;
+
+import com.example.lcc.mykitchen.entity.CollectFood;
+import com.example.lcc.mykitchen.entity.CollectionFood;
 import com.example.lcc.mykitchen.entity.FoodDetails;
 import com.example.lcc.mykitchen.manager.HttpRequestManager;
 
@@ -36,6 +42,26 @@ public class FoodDetailsActivity extends MyBaseActivity {
     public void initialUI() {
         actionBar = (LinearLayout) findViewById(R.id.llActionbarId);
         initActionbar(R.drawable.go_back_normal, "详情", R.drawable.like);
+        ImageView like= (ImageView) actionBar.findViewById(R.id.imgRightActionbarId);
+        like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CollectionFood collectFood=new CollectionFood();
+                collectFood.setFoodDetails(detail);
+                collectFood.setUserId(MyApp.bmobUser.getObjectId());
+                collectFood.save(FoodDetailsActivity.this, new SaveListener() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(FoodDetailsActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(int i, String s) {
+
+                    }
+                });
+            }
+        });
         initListView();
     }
 

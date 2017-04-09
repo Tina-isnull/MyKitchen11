@@ -50,6 +50,7 @@ public class ShareFragment extends BaseFragment implements ShareFragment01.sendD
     private LinearLayout rl_blank;
     private TextView tv_send;
     private String shareId;
+    private String shareToName;
     public ShareFragment() {
     }
 
@@ -91,7 +92,7 @@ public class ShareFragment extends BaseFragment implements ShareFragment01.sendD
             @Override
             public void onClick(View v) {
                 String text=et_comment_big.getText().toString();
-                String Content=MyApp.bmobUser.getUsername()+" 回复 "+text;
+                String Content=MyApp.bmobUser.getUsername()+" 回复 "+shareToName+":"+text;
                 Comments comment=new Comments();
                 comment.setShareId(shareId);
                 comment.setContent(Content);
@@ -116,9 +117,10 @@ public class ShareFragment extends BaseFragment implements ShareFragment01.sendD
     }
 
     @Override
-    public void sendVisible(String id) {
+    public void sendVisible(String id,String name) {
         //得到分享列表的id值
         shareId=id;
+        shareToName=name;
         startEditext("请评论");
     }
 

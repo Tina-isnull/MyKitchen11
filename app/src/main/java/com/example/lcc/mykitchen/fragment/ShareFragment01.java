@@ -37,7 +37,7 @@ public class ShareFragment01 extends Fragment {
     private PullToRefreshListView listView;
     private sendDynamic send;
     private List<ShareContent> mShareContent;
-    private List<String> stringM;
+    private List<Comments> stringM;
     public ShareFragment01() {
     }
 
@@ -92,7 +92,7 @@ public void setOnSendVisiable(sendDynamic send){
                         shareContent.setShareFriends(lists);
                         for (Comments comment:Clist){
                             if(comment.getShareId().equals(lists.getObjectId())){
-                                stringM.add(comment.getContent());
+                                stringM.add(comment);
                             }
                         }
                         shareContent.setCommentList(stringM);
@@ -125,6 +125,6 @@ public void setOnSendVisiable(sendDynamic send){
         });
     }
     public interface sendDynamic {
-        public void sendVisible(String id);
+        public void sendVisible(String id,String name);
     }
 }
