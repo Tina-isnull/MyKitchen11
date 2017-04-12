@@ -2,13 +2,16 @@ package com.example.lcc.mykitchen.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.lcc.mykitchen.MyApp;
 import com.example.lcc.mykitchen.R;
 import com.example.lcc.mykitchen.make_children.CountAlterActivity;
 import com.example.lcc.mykitchen.make_children.passWordAlterActivity;
@@ -70,7 +73,12 @@ public class MakeActivity extends MyBaseActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rl_make_countId:
-                startActivity(new Intent(this, CountAlterActivity.class));
+                String phone= MyApp.bmobUser.getMobilePhoneNumber();
+                if(TextUtils.isEmpty(phone)){
+                    startActivity(new Intent(this, CountAlterActivity.class));
+                }else{
+                    Toast.makeText(MakeActivity.this, "您已经绑定手机号", Toast.LENGTH_SHORT).show();;
+                }
                 break;
 
             case R.id.rl_make_passWordId:

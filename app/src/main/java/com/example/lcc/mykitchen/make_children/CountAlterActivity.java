@@ -28,7 +28,8 @@ public class CountAlterActivity extends MyBaseActivity implements View.OnClickLi
 
     private String number;
     private EditText countAlter;
-    private Button code;
+    private EditText mCode;
+    private Button getCode;
     MyCountTimer timer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +44,12 @@ public class CountAlterActivity extends MyBaseActivity implements View.OnClickLi
         actionBar = (LinearLayout)findViewById(R.id.llActionbarId);
         initActionbar(R.drawable.go_back_normal, "账号设置", -1);
         //获得控件，添加监听事件
-        code= (Button) findViewById(R.id.btn_countAlter_getCodeId);
+        getCode= (Button) findViewById(R.id.btn_countAlter_getCodeId);
         countAlter = (EditText) findViewById(R.id.et_countAlter_id);
+        mCode = (EditText) findViewById(R.id.et_code_id);
         Button next = (Button) findViewById(R.id.btn_countAlter_id);
 
-        code.setOnClickListener(this);
+        getCode.setOnClickListener(this);
         next.setOnClickListener(this);
     }
 
@@ -72,11 +74,11 @@ public class CountAlterActivity extends MyBaseActivity implements View.OnClickLi
         }
         @Override
         public void onTick(long millisUntilFinished) {
-            code.setText((millisUntilFinished / 1000) +"秒后重发");
+            getCode.setText((millisUntilFinished / 1000) +"秒后重发");
         }
         @Override
         public void onFinish() {
-            code.setText("重新发送验证码");
+            getCode.setText("重新发送验证码");
         }
     }
     private void requestSMSCode() {
@@ -106,7 +108,7 @@ public class CountAlterActivity extends MyBaseActivity implements View.OnClickLi
 
     private void verifyOrBind(){
         final String phone = countAlter.getText().toString();
-        String code = countAlter.getText().toString();
+        String code = mCode.getText().toString();
         if (TextUtils.isEmpty(phone)) {
             showToast("手机号码不能为空");
             return;
@@ -121,6 +123,7 @@ public class CountAlterActivity extends MyBaseActivity implements View.OnClickLi
         progress.setCanceledOnTouchOutside(false);
         progress.show();
         // V3.3.9提供的一键注册或登录方式，可传手机号码和验证码
+        Log.d("lcc====>","code="+code);
         BmobSMS.verifySmsCode(this,phone, code, new VerifySMSCodeListener() {
 
             @Override
