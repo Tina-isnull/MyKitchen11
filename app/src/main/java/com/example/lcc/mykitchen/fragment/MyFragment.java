@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.lcc.mykitchen.ui.CollectActivity;
 import com.example.lcc.mykitchen.ui.FocusActivity;
+import com.example.lcc.mykitchen.ui.FootprintActivity;
 import com.example.lcc.mykitchen.ui.LogoRegistActivity;
 import com.example.lcc.mykitchen.ui.MakeActivity;
 import com.example.lcc.mykitchen.ui.PersonDataActivity;
@@ -104,7 +105,7 @@ public class MyFragment extends BaseFragment implements OnClickListener {
                 startActivity(new Intent(getActivity(), MakeActivity.class));
                 break;
             case R.id.rBtnFootId:
-
+                startActivity(new Intent(getActivity(), FootprintActivity.class));
                 break;
             case R.id.rBtn_remenber_Id:
                 startActivity(new Intent(getActivity(), NoteMainActivity.class));

@@ -25,9 +25,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.lcc.mykitchen.MyApp;
 import com.example.lcc.mykitchen.adapter.ShowFragmentAdapter1;
 import com.example.lcc.mykitchen.adapter.ShowRecyclerAdapter;
+import com.example.lcc.mykitchen.entity.CollectionFood;
+import com.example.lcc.mykitchen.entity.FootprintBean;
 import com.example.lcc.mykitchen.entity.UploadMenuBean;
 import com.example.lcc.mykitchen.entity.UserInfo;
 import com.example.lcc.mykitchen.ui.FoodDetailsActivity;
@@ -50,6 +54,7 @@ import com.example.lcc.mykitchen.manager.HttpRequestManager;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
 
 public class ShowFragment2 extends BaseFragment {
     PullToRefreshListView ptrListView;
@@ -77,7 +82,7 @@ public class ShowFragment2 extends BaseFragment {
         contentView = inflater.inflate(R.layout.fragment_show2, container, false);
         //获得组件的根布局
         LinearLayout ll = (LinearLayout) contentView.findViewById(R.id.ll_show_id);
-        kitterLists=new ArrayList<>();
+        kitterLists = new ArrayList<>();
         //点击组件隐藏软键盘
         UpdateUI(ll);
         initUI();
@@ -141,16 +146,15 @@ public class ShowFragment2 extends BaseFragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mRecycler.setLayoutManager(linearLayoutManager);
-        mAdapter = new ShowRecyclerAdapter(getActivity(),kitterLists );
+        mAdapter = new ShowRecyclerAdapter(getActivity(), kitterLists);
         mRecycler.setAdapter(mAdapter);
         mAdapter.setOnItemClickLitener(new ShowRecyclerAdapter.OnItemClickLitener() {
             @Override
             public void OnClickItem(View view, int position) {
-                UserInfo info=mAdapter.getItem(position);
-                Intent intent=new Intent(getActivity(), PersonDetialsActivity.class);
-                intent.putExtra("intro",info);
+                UserInfo info = mAdapter.getItem(position);
+                Intent intent = new Intent(getActivity(), PersonDetialsActivity.class);
+                intent.putExtra("intro", info);
                 startActivity(intent);
-
             }
         });
         listView.addHeaderView(header_viewpager);
@@ -165,6 +169,22 @@ public class ShowFragment2 extends BaseFragment {
                 Intent intent = new Intent(getActivity(), FoodDetailsActivity.class);
                 intent.putExtra("step", steps);
                 startActivity(intent);
+
+//存储足迹
+                FootprintBean footprintBean = new FootprintBean();
+                footprintBean.setFoodDetails(steps);
+                footprintBean.setUserId(MyApp.bmobUser.getObjectId());
+                footprintBean.save(getActivity(), new SaveListener() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(int i, String s) {
+
+                    }
+                });
             }
         });
 
@@ -328,9 +348,9 @@ public class ShowFragment2 extends BaseFragment {
         radioButton.setPadding(10, 10, 10, 10);
         radioButton.setText(text);
         radioButton.setChecked(false);
-        ColorStateList csl=getResources().getColorStateList(R.color.lr_font_color_selector);
+        ColorStateList csl = getResources().getColorStateList(R.color.lr_font_color_selector);
         radioButton.setTextColor(csl);//设置选中/未选中的文字颜色
-       // radioButton.setBackgroundResource(R.drawable.selector_show_bg);//设置按钮选中/未选中的背景
+        // radioButton.setBackgroundResource(R.drawable.selector_show_bg);//设置按钮选中/未选中的背景
         radioGroup.addView(radioButton);//将单选按钮添加到RadioGroup中
     }
 
@@ -452,17 +472,18 @@ public class ShowFragment2 extends BaseFragment {
             }
         }
     }
-/**
- * 得到kitter的基本信息
- */
-    public void getKitterInfo(){
-        BmobQuery<UserInfo> bmobQuery=new BmobQuery<>();
+
+    /**
+     * 得到kitter的基本信息
+     */
+    public void getKitterInfo() {
+        BmobQuery<UserInfo> bmobQuery = new BmobQuery<>();
         bmobQuery.findObjects(getActivity(), new FindListener<UserInfo>() {
             @Override
             public void onSuccess(List<UserInfo> list) {
-                if(list!=null&&list.size()!=0){
-                    kitterLists=list;
-                    mAdapter.addDate(kitterLists,true);
+                if (list != null && list.size() != 0) {
+                    kitterLists = list;
+                    mAdapter.addDate(kitterLists, true);
                 }
             }
 

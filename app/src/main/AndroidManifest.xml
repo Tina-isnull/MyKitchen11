@@ -51,9 +51,9 @@
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <!-- 视频录制 -->
-    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"></uses-permission>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 短信验证 -->
     <!-- 获取GSM（2g）、WCDMA（联通3g）等网络状态的信息 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -174,7 +174,9 @@
         <activity android:name=".video.VideoActivity" />
         <activity android:name=".video.VideoActivity2" />
         <activity android:name=".zhibo.LivePlayerActivity" />
-        <activity android:name=".ui.PersonDetialsActivity"></activity>
+        <activity android:name=".ui.PersonDetialsActivity" />
+        <activity android:name=".ui.FootprintActivity" />
+        <activity android:name=".ui.MoneyActivity"></activity>
     </application>
 
 </manifest>

@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 
 /**
  *
- * @author tarena
+ * @author tina
  * name 定义收藏的菜名或者厨师名
  * imgHeader 定义收藏的。。头像
  * introduce 定义收藏的。。介绍

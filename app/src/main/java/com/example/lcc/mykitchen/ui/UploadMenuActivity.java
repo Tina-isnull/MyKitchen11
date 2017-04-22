@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lcc.mykitchen.MyApp;
 import com.example.lcc.mykitchen.R;
 
 import java.io.File;
@@ -34,6 +35,7 @@ import butterknife.OnClick;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 
 import com.example.lcc.mykitchen.entity.FoodFromWeb;
@@ -113,6 +115,28 @@ public class UploadMenuActivity extends AppCompatActivity {
             @Override
             public void onSuccess() {
                 Toast.makeText(UploadMenuActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
+                //获得是10个厨币
+                UserInfo userInfo=new UserInfo();
+                String money=MyApp.bmobUser.getMoney();
+                if(TextUtils.isEmpty(money)){
+                    money=10+"";
+                }else{
+                    money=(Integer.parseInt(money)+10)+"";
+                }
+
+                userInfo.setMoney(money);
+                userInfo.update(UploadMenuActivity.this, new UpdateListener() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(UploadMenuActivity.this, "恭喜您获得了10个厨币哦", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(int i, String s) {
+
+                    }
+                });
+
                 finish();
             }
 

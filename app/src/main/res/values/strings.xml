@@ -9,4 +9,8 @@
     <string name="take_photo">拍照</string>
     <string name="select_from_local">从相册中选取</string>
     <string name="title_activity_menu_add_content">MenuAddContentActivity</string>
+    <!--厨币-->
+    <string name="money_get_one">发状态可以获得5厨币</string>
+    <string name="money_get_two">发作品可以获得10厨币</string>
+    <string name="money_count">我的钱包(币):</string>
 </resources>

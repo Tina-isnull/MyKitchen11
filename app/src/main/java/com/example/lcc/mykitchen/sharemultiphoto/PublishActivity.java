@@ -31,8 +31,10 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.example.lcc.mykitchen.MyApp;
 import com.example.lcc.mykitchen.ui.MainPagerActivity;
 import com.example.lcc.mykitchen.R;
 
@@ -40,6 +42,7 @@ import com.example.lcc.mykitchen.adapter.sharemultiphoto.ImagePublishAdapter;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 import com.example.lcc.mykitchen.entity.ImageItem;
 import com.example.lcc.mykitchen.entity.ShareFriends;
@@ -145,6 +148,29 @@ public class PublishActivity extends Activity {
         sendTv.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
+                //获得是10个厨币
+                UserInfo userInfo=new UserInfo();
+                String money=MyApp.bmobUser.getMoney();
+                if(TextUtils.isEmpty(money)){
+                    money=10+"";
+                }else{
+
+                    money=(Integer.parseInt(money)+10)+"";
+                }
+                userInfo.setMoney(money+"");
+                userInfo.update(PublishActivity.this, new UpdateListener() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(PublishActivity.this, "恭喜您获得了10个厨币哦", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(int i, String s) {
+
+                    }
+                });
+
+
                 removeTempFromPref();
                 progressDialog.show(PublishActivity.this,"提示","正在上传图片");
                 //System.exit(0);

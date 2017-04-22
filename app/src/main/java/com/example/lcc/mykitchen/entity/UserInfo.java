@@ -11,6 +11,7 @@ public class UserInfo extends BmobUser implements Serializable {
     private String headerUrl;
     private Boolean gender;
     private String intro;
+    private String money;
 
     public String getHeaderUrl() {
         return headerUrl;
@@ -34,5 +35,13 @@ public class UserInfo extends BmobUser implements Serializable {
 
     public void setIntro(String intro) {
         this.intro = intro;
+    }
+
+    public String getMoney() {
+        return money;
+    }
+
+    public void setMoney(String money) {
+        this.money = money;
     }
 }
