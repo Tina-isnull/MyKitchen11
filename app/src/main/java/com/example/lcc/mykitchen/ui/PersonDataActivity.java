@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,6 +23,11 @@ import com.example.lcc.mykitchen.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -48,7 +54,8 @@ public class PersonDataActivity extends MyBaseActivity {
     private String filePath;
     private SpUtils spUtils;
     private UserInfo bmobUser;
-
+    private static final int PHOTO_RESOULT = 3;// 结果
+    private static final String IMAGE_UNSPECIFIED = "image/*";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,47 +125,6 @@ public class PersonDataActivity extends MyBaseActivity {
                 Toast.makeText(PersonDataActivity.this, "更新用户信息失败" + msg, Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
-       /* String nickname = mNickname.getText().toString();
-        String intro = mContent.getText().toString();
-        //获得账号在bmob中的账号id
-        String objectId=spUtils.getBmobUserId();
-        if (TextUtils.isEmpty(nickname) || TextUtils.isEmpty(intro)) {
-            Toast.makeText(PersonDataActivity.this, "请填入昵称并介绍下自己吧", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        Boolean gender = false;
-        UserInfo info = new UserInfo();
-        if (mRg.getCheckedRadioButtonId() == R.id.rBtn_info_girl) {
-            gender = true;
-        }
-        //保存数据在偏好设置中
-        spUtils.setNickName(nickname);
-        spUtils.setHeaderUrl(avatarUrl);
-        spUtils.setIntro(intro);
-        spUtils.setGender(gender);
-
-        info.setObjectId(objectId);
-        info.setNickName(nickname);
-        info.setGender(gender);
-        //TODO
-        info.setHeaderUrl(avatarUrl);
-        info.setIntro(intro);
-        //更新数据
-        info.update(PersonDataActivity.this, new UpdateListener() {
-            @Override
-            public void onSuccess() {
-                //更新成功
-                finish();
-            }
-
-            @Override
-            public void onFailure(int i, String s) {
-                Toast.makeText(PersonDataActivity.this, "出错啦"+i+" "+s, Toast.LENGTH_SHORT).show();
-            }
-        });*/
     }
 
     @OnClick(R.id.tv_personalData2_id)
@@ -197,6 +163,10 @@ public class PersonDataActivity extends MyBaseActivity {
                 //图片是从系统拍照返回的
                 filePath = path;
             }
+
+           /* Bitmap compressPic=getBitmap(filePath);
+            compressBiamp(compressPic,filePath,90);*/
+
             //将图片上传Bmob服务器
             final BmobFile bf = new BmobFile(new File(filePath));
             bf.uploadblock(this, new UploadFileListener() {
@@ -219,6 +189,90 @@ public class PersonDataActivity extends MyBaseActivity {
 
         }
     }
+    /**
+     * 通过路径获取Bitmap对象
+     *
+     * @param path
+     * @return
+     */
+    public static Bitmap getBitmap(String path) {
+        Bitmap bm = null;
+        InputStream is = null;
+        try {
+            File outFilePath = new File(path);
+            //判断如果当前的文件不存在时，创建该文件一般不会不存在
+            if (!outFilePath.exists()) {
+                boolean flag = false;
+                try {
+                    flag = outFilePath.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("---创建文件结果----" + flag);
+            }
+            is = new FileInputStream(outFilePath);
+            bm = BitmapFactory.decodeStream(is);
 
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return bm;
+    }
+    /**
+     * 压缩图片到指定位置(默认JPG格式)
+     *
+     * @param bitmap       需要压缩的图片
+     * @param compressPath 生成文件路径(例如: /storage/imageCache/1.jpg)
+     * @param quality      图片质量，0~100
+     * @return if true,保存成功
+     */
+    public static boolean compressBiamp(Bitmap bitmap, String compressPath, int quality) {
+        FileOutputStream stream = null;
+        try {
+            stream = new FileOutputStream(new File(compressPath));
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream);// (0-100)压缩文件
+
+            return true;
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                stream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return false;
+    }
+
+    //剪裁图片
+    /**
+     * 收缩图片
+     *
+     * @param uri
+     */
+    public void startPhotoZoom(Uri uri) {
+        Intent intent = new Intent("com.android.camera.action.CROP");//调用Android系统自带的一个图片剪裁页面,
+        intent.setDataAndType(uri, IMAGE_UNSPECIFIED);
+        intent.putExtra("crop", "true");//进行修剪
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        // outputX outputY 是裁剪图片宽高
+        intent.putExtra("outputX", 300);
+        intent.putExtra("outputY", 500);
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, PHOTO_RESOULT);
+    }
 
 }

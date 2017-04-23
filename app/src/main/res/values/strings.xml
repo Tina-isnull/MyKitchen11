@@ -13,4 +13,6 @@
     <string name="money_get_one">发状态可以获得5厨币</string>
     <string name="money_get_two">发作品可以获得10厨币</string>
     <string name="money_count">我的钱包(币):</string>
+    <!--第三方登录 -->
+    <string name="qq_login">qq登录</string>
 </resources>

@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.lcc.mykitchen.R;
 import com.example.lcc.mykitchen.entity.VideoWeb;
 import com.example.lcc.mykitchen.zhibo.LivePlayerActivity;
+import com.example.lcc.mykitchen.zhibo.RTMPBaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,7 +104,7 @@ public class VideoFragment2 extends Fragment {
         super.onResume();
         VideoWeb videoWeb=new VideoWeb();
         videoWeb.setImg(R.drawable.video_food1);
-        videoWeb.setUrl("http://6505.liveplay.myqcloud.com/live/6505_722fdd1e6c.flv");
+        videoWeb.setUrl("rtmp://6505.liveplay.myqcloud.com/live/6505_12265c2e4a");
         list.add(videoWeb);
     }
 }

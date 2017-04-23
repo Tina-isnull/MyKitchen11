@@ -3,7 +3,6 @@ package com.example.lcc.mykitchen.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -94,7 +93,7 @@ public class MakeActivity extends MyBaseActivity implements View.OnClickListener
                 BmobUser.logOut(this);
                // DataCleanManager.cleanApplicationData();
                 sp.setLoginState(false);
-                startActivity(new Intent(this, LogoActivity.class));
+                startActivity(new Intent(this, LoginActivity.class));
                 finish();
                 break;
             default:

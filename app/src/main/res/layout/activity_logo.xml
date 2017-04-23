@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/logo_bag"
     android:orientation="vertical"
-    tools:context=".ui.LogoActivity">
+    tools:context=".ui.LoginActivity">
     <include layout="@layout/include_actionbar" />
 
     <LinearLayout
@@ -125,27 +125,23 @@
             android:layout_toEndOf="@id/tv_logo_mId" />
     </RelativeLayout>
 
-    <RadioGroup
-        android:id="@+id/radioGroup1"
+    <LinearLayout
+        android:id="@+id/ll_qq_logoId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:orientation="horizontal" >
+        android:orientation="vertical" >
 
-        <RadioButton
-            android:id="@+id/radio_qq_logoId"
-            style="@style/include_bottom_rGBtn"
-            android:drawableTop="@drawable/logo_qq"
-            android:textColor="#000000"
-            android:text="qq"
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/logo_qq"
             />
-
-        <RadioButton
-            android:id="@+id/radio_weChat_logoId"
-            style="@style/include_bottom_rGBtn"
-            android:drawableTop="@drawable/logo_wechat"
-            android:textColor="#000000"
-            android:text="微信" />
-    </RadioGroup>
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/qq_login"/>
+    </LinearLayout>
 
 </LinearLayout>

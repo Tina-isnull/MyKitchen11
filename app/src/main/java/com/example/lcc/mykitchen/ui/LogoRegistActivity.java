@@ -23,7 +23,7 @@ public class LogoRegistActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_lore_loId)
     public void login(View view) {
-        startActivity(new Intent(this,LogoActivity.class));
+        startActivity(new Intent(this,LoginActivity.class));
         finish();
     }
 

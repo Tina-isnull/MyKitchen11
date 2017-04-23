@@ -361,13 +361,15 @@ public class ShowFragment2 extends BaseFragment {
         RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, 50);
         layoutParams.setMargins(10, 10, 10, 10);
         radioButton.setLayoutParams(layoutParams);
-        radioButton.setTextSize(12);
+        radioButton.setTextSize(14);
         radioButton.setButtonDrawable(android.R.color.transparent);//隐藏单选圆形按钮
         radioButton.setGravity(Gravity.CENTER);
         radioButton.setPadding(10, 10, 10, 10);
         radioButton.setText(text);
-        radioButton.setTextColor(getResources().getColor(R.color.lr_font_color_selector));//设置选中/未选中的文字颜色
-        radioButton.setBackgroundResource(R.drawable.selector_show_bg);//设置按钮选中/未选中的背景
+        ColorStateList csl = getResources().getColorStateList(R.color.lr_font_color_selector);
+        radioButton.setTextColor(csl);//设置选中/未选中的文字颜色
+       // radioButton.setTextColor(getResources().getColor(R.color.lr_font_color_selector));//设置选中/未选中的文字颜色
+      //  radioButton.setBackgroundResource(R.drawable.selector_show_bg);//设置按钮选中/未选中的背景
         radioGroup.addView(radioButton);//将单选按钮添加到RadioGroup中
         radioButton.setChecked(true);
     }

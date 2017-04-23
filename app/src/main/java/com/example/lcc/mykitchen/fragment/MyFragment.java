@@ -17,6 +17,7 @@ import com.example.lcc.mykitchen.ui.FocusActivity;
 import com.example.lcc.mykitchen.ui.FootprintActivity;
 import com.example.lcc.mykitchen.ui.LogoRegistActivity;
 import com.example.lcc.mykitchen.ui.MakeActivity;
+import com.example.lcc.mykitchen.ui.MoneyActivity;
 import com.example.lcc.mykitchen.ui.PersonDataActivity;
 import com.example.lcc.mykitchen.R;
 import com.example.lcc.mykitchen.notebook.NoteMainActivity;
@@ -93,7 +94,7 @@ public class MyFragment extends BaseFragment implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rBtnMoneyId:
-
+                startActivity(new Intent(getActivity(), MoneyActivity.class));
                 break;
             case R.id.rBtnFocusId:
                 startActivity(new Intent(getActivity(), FocusActivity.class));

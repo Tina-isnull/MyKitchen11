@@ -103,90 +103,6 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
         mRotationObserver = new RotationObserver(new Handler());
         mRotationObserver.startObserver();
 
-
-//    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-//    private void StartScreenCapture() {
-//        if(mProjectionManager == null) mProjectionManager = (MediaProjectionManager) getActivity().getSystemService
-//                (Context.MEDIA_PROJECTION_SERVICE);
-//
-//        startActivityForResult(mProjectionManager.createScreenCaptureIntent(), REQUEST_CODE_CS);
-//    }
-//
-//    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-//    private void StopScreenCapture() {
-//        if(mVirtualDisplay != null) mVirtualDisplay.release();
-//        if(mMediaProjection!= null) mMediaProjection.stop();
-//        if (mImageReader != null) mImageReader.close();
-//
-//        mVirtualDisplay = null;
-//        mMediaProjection = null;
-//        mImageReader = null;
-//    }
-//
-//    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode != REQUEST_CODE_CS) {
-//            Log.e(TAG, "Unknown request code: " + requestCode);
-//            return;
-//        }
-//        if (resultCode != Activity.RESULT_OK) {
-//            Log.e(TAG, "Screen Cast Permission Denied, resultCode:" + resultCode);
-//            return;
-//        }
-//
-//        mMediaProjection = mProjectionManager.getMediaProjection(resultCode, data);
-//
-//        int W = 720, H = W/9*16;
-//
-//        mImageReader = ImageReader.newInstance(W, H, PixelFormat.RGBA_8888, 2);
-//
-//        Surface imageReaderSurface = null;
-//        if(mImageReader != null)
-//        {
-//            mImageReader.setOnImageAvailableListener(this, null);
-//            imageReaderSurface =  mImageReader.getSurface();
-//        }
-//
-//        mVirtualDisplay = mMediaProjection.createVirtualDisplay("TXScreenCapture",
-//                W, H, 1,
-//                DisplayManager.VIRTUAL_DISPLAY_FLAG_PUBLIC,
-//        imageReaderSurface, null /*Callbacks*/, null
-//                    /*Handler*/);
-//
-//        mVideoPublish = startPublishRtmp();
-//    }
-//
-//    private byte [] mGetRGBA = null;
-//
-//    @Override
-//    public void onImageAvailable(ImageReader var1)
-//    {
-//        Image image = var1.acquireNextImage();
-//
-//        if(image != null)
-//        {
-//            Image.Plane [] planes = image.getPlanes();
-//
-//            ByteBuffer rgbaPlane = planes[0].getBuffer();
-//
-//            if(mGetRGBA == null || mGetRGBA.length != rgbaPlane.remaining())
-//            {
-//                mGetRGBA = new byte[rgbaPlane.remaining()];
-//            }
-//            rgbaPlane.get(mGetRGBA);
-//
-//            if(mLivePusher != null) mLivePusher.sendCustomVideoData(mGetRGBA, TXLivePusher.RGB_RGBA, image.getWidth(), image.getHeight());
-//
-//            image.close();
-//        }
-//    }
-
-
-
         initView();
         mCaptureView = (TXCloudVideoView) findViewById(R.id.video_view);
 
@@ -470,7 +386,7 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
     }
 
     private boolean startPublishRtmp() {
-        String rtmpUrl = "rtmp://6505.livepush.myqcloud.com/live/6505_722fdd1e6c?bizid=6505&txSecret=4909eaae9430c9fb6800121cc53a57a1&txTime=58D7E57F";
+        String rtmpUrl = "rtmp://6505.livepush.myqcloud.com/live/6505_12265c2e4a?bizid=6505&txSecret=395dda21e57281d170f1a89f2fd584e5&txTime=58FCCF7F";
         if (TextUtils.isEmpty(rtmpUrl) || (!rtmpUrl.trim().toLowerCase().startsWith("rtmp://"))) {
             mVideoPublish = false;
             Toast.makeText(LivePublisherActivity.this, "推流地址不合法，目前支持rtmp推流!", Toast.LENGTH_SHORT).show();
