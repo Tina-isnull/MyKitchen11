@@ -1,4 +1,4 @@
-package com.example.lcc.mykitchen.ui;
+package com.example.lcc.mykitchen.activity;
 
 import android.support.v4.view.ViewPager;
 import android.view.View;

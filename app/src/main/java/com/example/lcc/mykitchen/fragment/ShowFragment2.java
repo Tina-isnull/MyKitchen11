@@ -30,14 +30,14 @@ import android.widget.Toast;
 import com.example.lcc.mykitchen.MyApp;
 import com.example.lcc.mykitchen.adapter.ShowFragmentAdapter1;
 import com.example.lcc.mykitchen.adapter.ShowRecyclerAdapter;
-import com.example.lcc.mykitchen.entity.CollectionFood;
 import com.example.lcc.mykitchen.entity.FootprintBean;
 import com.example.lcc.mykitchen.entity.UploadMenuBean;
 import com.example.lcc.mykitchen.entity.UserInfo;
-import com.example.lcc.mykitchen.ui.FoodDetailsActivity;
+import com.example.lcc.mykitchen.activity.FoodDetailsActivity;
 import com.example.lcc.mykitchen.R;
-import com.example.lcc.mykitchen.ui.PersonDetialsActivity;
-import com.example.lcc.mykitchen.ui.SearchActivity;
+import com.example.lcc.mykitchen.activity.PersonDetialsActivity;
+import com.example.lcc.mykitchen.activity.SearchActivity;
+import com.example.lcc.mykitchen.manager.HttpRequestManager;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
@@ -46,11 +46,9 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.example.lcc.mykitchen.adapter.BannerShowAdapter;
-import com.example.lcc.mykitchen.adapter.ShowFragmentAdapter;
 import com.example.lcc.mykitchen.entity.FoodFromWeb;
 import com.example.lcc.mykitchen.entity.FoodDetails;
 import com.example.lcc.mykitchen.manager.HideSoftKeyboard;
-import com.example.lcc.mykitchen.manager.HttpRequestManager;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
@@ -368,8 +366,6 @@ public class ShowFragment2 extends BaseFragment {
         radioButton.setText(text);
         ColorStateList csl = getResources().getColorStateList(R.color.lr_font_color_selector);
         radioButton.setTextColor(csl);//设置选中/未选中的文字颜色
-       // radioButton.setTextColor(getResources().getColor(R.color.lr_font_color_selector));//设置选中/未选中的文字颜色
-      //  radioButton.setBackgroundResource(R.drawable.selector_show_bg);//设置按钮选中/未选中的背景
         radioGroup.addView(radioButton);//将单选按钮添加到RadioGroup中
         radioButton.setChecked(true);
     }
@@ -385,18 +381,22 @@ public class ShowFragment2 extends BaseFragment {
     }
 
     private void refresh(String food) {
-      /*  HttpRequestManager.requestFood(food, new HttpRequestManager.loadFoodListener() {
+       /* HttpRequestManager.requestFood(food, new HttpRequestManager.loadFoodListener() {
            @Override
-            public void foodShow(List<FoodFromWeb.Detials> bean) {*/
+            public void foodShow(List<FoodFromWeb.Detials> bean) {
+               if(bean==null&&bean.size()==0){
+                   Toast.makeText(getActivity(), "抱歉，库中没有该数据", Toast.LENGTH_SHORT).show();
+                   return;
+               }*/
         List<FoodDetails> lists = new ArrayList<FoodDetails>();
                /* for (FoodFromWeb.Detials foodData : bean) {
                     FoodDetails food = new FoodDetails("","商家", foodData);
                    lists.add(food);
                 }*/
         getFromBmobFood(lists);
+    /*}
+        });*/
     }
-    /*    });
-    }*/
 
     public void getFromBmobFood(final List<FoodDetails> detialsList) {
         BmobQuery<UploadMenuBean> query = new BmobQuery<>();

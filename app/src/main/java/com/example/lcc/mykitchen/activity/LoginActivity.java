@@ -1,4 +1,4 @@
-package com.example.lcc.mykitchen.ui;
+package com.example.lcc.mykitchen.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -69,7 +69,12 @@ public class LoginActivity extends MyBaseActivity {
             }
             @Override
             public void onFailure(int code, String msg) {
-                Toast.makeText(LoginActivity.this,"登录失败",Toast.LENGTH_LONG).show();
+                if(code==109){
+                    Toast.makeText(LoginActivity.this,"用户名和密码不可为空",Toast.LENGTH_LONG).show();
+                }else if(code==101) {
+                    Toast.makeText(LoginActivity.this,"用户名或密码不正确",Toast.LENGTH_LONG).show();
+                }
+
             }
         });
     }
@@ -91,7 +96,6 @@ public class LoginActivity extends MyBaseActivity {
         }
         mTencent.logout(this);
         mTencent.login(this, "all", new IUiListener() {
-
             @Override
             public void onComplete(Object arg0) {
                 // TODO Auto-generated method stub

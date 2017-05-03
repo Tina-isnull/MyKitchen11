@@ -67,25 +67,25 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.SplashActivity">
+        <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.CollectActivity" />
-        <activity android:name=".ui.FocusActivity" />
-        <activity android:name=".ui.GuideActivity" />
-        <activity android:name=".ui.LoginActivity" />
-        <activity android:name=".ui.LogoRegistActivity" />
+        <activity android:name=".activity.CollectActivity" />
+        <activity android:name=".activity.FocusActivity" />
+        <activity android:name=".activity.GuideActivity" />
+        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.LogoRegistActivity" />
         <activity
-            android:name=".ui.MainPagerActivity"
+            android:name=".activity.MainPagerActivity"
             android:configChanges="orientation|screenSize|screenLayout"
             android:launchMode="singleTask" />
-        <activity android:name=".ui.PersonDataActivity" />
-        <activity android:name=".ui.RegisterActivity" />
-        <activity android:name=".ui.MakeActivity" />
+        <activity android:name=".activity.PersonDataActivity" />
+        <activity android:name=".activity.RegisterActivity" />
+        <activity android:name=".activity.MakeActivity" />
         <activity android:name=".make_children.CountAlterActivity" />
         <activity android:name=".make_children.passWordAlterActivity" />
 
@@ -120,13 +120,13 @@
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
-        <activity android:name=".ui.FoodDetailsActivity" />
-        <activity android:name=".ui.SearchActivity" />
-        <activity android:name=".ui.UploadMenuActivity" />
+        <activity android:name=".activity.FoodDetailsActivity" />
+        <activity android:name=".activity.SearchActivity" />
+        <activity android:name=".activity.UploadMenuActivity" />
         <activity
-            android:name=".ui.MenuAddContentActivity"
+            android:name=".activity.MenuAddContentActivity"
             android:label="@string/title_activity_menu_add_content" />
-        <activity android:name=".ui.AddMaterialActivity" />
+        <activity android:name=".activity.AddMaterialActivity" />
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -174,9 +174,9 @@
         <activity android:name=".video.VideoActivity" />
         <activity android:name=".video.VideoActivity2" />
         <activity android:name=".zhibo.LivePlayerActivity" />
-        <activity android:name=".ui.PersonDetialsActivity" />
-        <activity android:name=".ui.FootprintActivity" />
-        <activity android:name=".ui.MoneyActivity"></activity>
+        <activity android:name=".activity.PersonDetialsActivity" />
+        <activity android:name=".activity.FootprintActivity" />
+        <activity android:name=".activity.MoneyActivity"></activity>
 <!--qq第三方登录 -->
         <activity android:name="com.tencent.connect.common.AssistActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"

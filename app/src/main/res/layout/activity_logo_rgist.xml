@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/lo_ri_select"
-    tools:context=".ui.LogoRegistActivity">
+    tools:context=".activity.LogoRegistActivity">
 
     <Button
         android:id="@+id/btn_lore_reId"

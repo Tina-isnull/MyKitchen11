@@ -1,9 +1,11 @@
 package com.example.lcc.mykitchen.zhibo;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -11,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -19,23 +23,29 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lcc.mykitchen.MyApp;
 import com.example.lcc.mykitchen.R;
+import com.example.lcc.mykitchen.activity.FlusMessage;
+import com.example.lcc.mykitchen.entity.ChatInfo;
+import com.example.lcc.mykitchen.entity.Comments;
+import com.example.lcc.mykitchen.entity.UserInfo;
 import com.example.lcc.mykitchen.sharemultiphoto.PublishActivity;
+import com.nostra13.universalimageloader.utils.L;
 import com.tencent.rtmp.ITXLivePlayListener;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.rtmp.TXLivePlayConfig;
 import com.tencent.rtmp.TXLivePlayer;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 
-public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayListener, View.OnClickListener {
-    private static final String TAG = LivePlayerActivity.class.getSimpleName();
+import cn.bmob.v3.listener.SaveListener;
 
+public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayListener, View.OnClickListener,FlusMessage.messageShow{
+    private static final String TAG = LivePlayerActivity.class.getSimpleName();
     private TXLivePlayer mLivePlayer = null;
     private boolean mVideoPlay;
     private TXCloudVideoView mPlayerView;
     private ImageView mLoadingView;
     private boolean mHWDecode = false;
-
     private Button mBtnLog;
     private Button mBtnPlay;
     private Button mBtnRenderRotation;
@@ -45,14 +55,11 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
     private SeekBar mSeekBar;
     private TextView mTextDuration;
     private TextView mTextStart;
-
     private static final int CACHE_STRATEGY_FAST = 1;  //极速
     private static final int CACHE_STRATEGY_SMOOTH = 2;  //流畅
     private static final int CACHE_STRATEGY_AUTO = 3;  //自动
-
     private static final int CACHE_TIME_FAST = 1;
     private static final int CACHE_TIME_SMOOTH = 5;
-
     private int mCacheStrategy = 0;
     private Button mBtnCacheStrategy;
     private Button mRatioFast;
@@ -60,10 +67,8 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
     private Button mRatioAuto;
     private Button mBtnStop;
     private LinearLayout mLayoutCacheStrategy;
-
     private int mCurrentRenderMode;
     private int mCurrentRenderRotation;
-
     private long mTrackingTouchTS = 0;
     private boolean mStartSeek = false;
     private boolean mVideoPause = false;
@@ -71,22 +76,24 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
     private TXLivePlayConfig mPlayConfig;
     private long mStartPlayTS = 0;
     private String playUrl;
+    private EditText intput;
+    private Button mSend;
+    private LinearLayout ll_input;
+    private FlusMessage flusMessage;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
         setActivityType(RTMPBaseActivity.ACTIVITY_TYPE_LIVE_PLAY);
         //得到播放的url
-        playUrl=getIntent().getStringExtra("playUrl");
+        playUrl = getIntent().getStringExtra("playUrl");
         mCurrentRenderMode = TXLiveConstants.RENDER_MODE_ADJUST_RESOLUTION;
         mCurrentRenderRotation = TXLiveConstants.RENDER_ROTATION_PORTRAIT;
 
         mPlayConfig = new TXLivePlayConfig();
-
         if (mLivePlayer == null) {
             mLivePlayer = new TXLivePlayer(this);
         }
-
         mPlayerView = (TXCloudVideoView) findViewById(R.id.video_view);
         mLoadingView = (ImageView) findViewById(R.id.loadingImageView);
 
@@ -100,7 +107,7 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
         mScrollView = (ScrollView) findViewById(R.id.scrollview);
         mScrollView.setVisibility(View.GONE);
 
-        mBtnPlay = (Button)findViewById(R.id.btnPlay);
+        mBtnPlay = (Button) findViewById(R.id.btnPlay);
         mBtnPlay.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,7 +135,9 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
                 }
             }
         });
-
+        //刷新消息部分
+        flusMessage=new FlusMessage(this,this);
+        flusMessage.start();
         //停止按钮
         mBtnStop = (Button) findViewById(R.id.btnStop);
         mBtnStop.setOnClickListener(new OnClickListener() {
@@ -145,9 +154,44 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
                 }
             }
         });
+        initView();
+        //评论部分
+        intput= (EditText) findViewById(R.id.et_play_input);
+        mSend= (Button) findViewById(R.id.btn_send);
+        ll_input= (LinearLayout) findViewById(R.id.ll_input);
+        mSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text = intput.getText().toString();
+                String Content = MyApp.bmobUser.getUsername() + " : " + text;
+                ChatInfo info = new ChatInfo();
+                info.setChatContent(Content);
+                info.save(LivePlayerActivity.this, new SaveListener() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(LivePlayerActivity.this, "评论成功", Toast.LENGTH_LONG).show();
+                        ll_input.setVisibility(View.GONE);
+                    }
 
-        mBtnLog = (Button)findViewById(R.id.btnLog);
+                    @Override
+                    public void onFailure(int i, String s) {
+                        Toast.makeText(LivePlayerActivity.this, "请稍后再试", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
+/***
+ * 暂时借用一下，发送消息
+ */
+        mBtnLog = (Button) findViewById(R.id.btnLog);
         mBtnLog.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ll_input.setVisibility(View.VISIBLE);
+            }
+        });
+
+       /* mBtnLog.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mLogViewStatus.getVisibility() == View.GONE) {
@@ -162,7 +206,7 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
                     mBtnLog.setBackgroundResource(R.drawable.log_show);
                 }
             }
-        });
+        });*/
 
         //横屏|竖屏
         mBtnRenderRotation = (Button) findViewById(R.id.btnOrientation);
@@ -186,7 +230,7 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
         });
 
         //平铺模式
-        mBtnRenderMode = (Button)findViewById(R.id.btnRenderMode);
+        mBtnRenderMode = (Button) findViewById(R.id.btnRenderMode);
         mBtnRenderMode.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -234,7 +278,7 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
             }
         });
 
-        mSeekBar = (SeekBar)findViewById(R.id.seekbar);
+        mSeekBar = (SeekBar) findViewById(R.id.seekbar);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean bFromUser) {
@@ -261,8 +305,8 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
         mTextDuration.setTextColor(Color.rgb(255, 255, 255));
         mTextStart.setTextColor(Color.rgb(255, 255, 255));
         //缓存策略
-        mBtnCacheStrategy = (Button)findViewById(R.id.btnCacheStrategy);
-        mLayoutCacheStrategy = (LinearLayout)findViewById(R.id.layoutCacheStrategy);
+        mBtnCacheStrategy = (Button) findViewById(R.id.btnCacheStrategy);
+        mLayoutCacheStrategy = (LinearLayout) findViewById(R.id.layoutCacheStrategy);
         mBtnCacheStrategy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -272,7 +316,7 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
 
         this.setCacheStrategy(CACHE_STRATEGY_AUTO);
 
-        mRatioFast = (Button)findViewById(R.id.radio_btn_fast);
+        mRatioFast = (Button) findViewById(R.id.radio_btn_fast);
         mRatioFast.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -281,7 +325,7 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
             }
         });
 
-        mRatioSmooth = (Button)findViewById(R.id.radio_btn_smooth);
+        mRatioSmooth = (Button) findViewById(R.id.radio_btn_smooth);
         mRatioSmooth.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -290,7 +334,7 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
             }
         });
 
-        mRatioAuto = (Button)findViewById(R.id.radio_btn_auto);
+        mRatioAuto = (Button) findViewById(R.id.radio_btn_auto);
         mRatioAuto.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -309,8 +353,9 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
             mBtnCacheStrategy.setVisibility(View.GONE);
         }
 
-      //  setOnClickListener(this);
+        //  setOnClickListener(this);
     }
+
 
     @Override
     public void onDestroy() {
@@ -321,6 +366,7 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
         if (mPlayerView != null) {
             mPlayerView.onDestroy();
         }
+        FlusMessage.isStop=true;
     }
 
     @Override
@@ -471,7 +517,7 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
     }
 
     private void stopPlayRtmp() {
-       // enableQRCodeBtn(true);
+        // enableQRCodeBtn(true);
         mBtnPlay.setBackgroundResource(R.drawable.play_start);
         stopLoadingAnimation();
         if (mLivePlayer != null) {
@@ -602,5 +648,11 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
             mLoadingView.setVisibility(View.GONE);
             ((AnimationDrawable) mLoadingView.getDrawable()).stop();
         }
+    }
+//显示聊天信息
+    @Override
+    public void setInfos(String message) {
+        Log.d("TAG","paly="+message);
+        mLogViewEvent.setText(message);
     }
 }

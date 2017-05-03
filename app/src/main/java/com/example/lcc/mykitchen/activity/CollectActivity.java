@@ -1,14 +1,12 @@
-package com.example.lcc.mykitchen.ui;
+package com.example.lcc.mykitchen.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.lcc.mykitchen.MyApp;
 import com.example.lcc.mykitchen.adapter.CollectFoodAdapter;
-import com.example.lcc.mykitchen.entity.CollectFood;
 import com.example.lcc.mykitchen.entity.CollectionFood;
 import com.example.lcc.mykitchen.entity.FoodDetails;
-import com.example.lcc.mykitchen.utils.DBUtils;
 
 import android.view.View;
 import android.widget.AdapterView;

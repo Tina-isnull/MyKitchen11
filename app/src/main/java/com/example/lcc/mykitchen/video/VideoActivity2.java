@@ -8,6 +8,8 @@ import android.media.MediaRecorder;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,6 +33,7 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UploadFileListener;
+
 import com.example.lcc.mykitchen.entity.FoodVideo;
 import com.example.lcc.mykitchen.entity.UserInfo;
 
@@ -44,6 +47,16 @@ public class VideoActivity2 extends AppCompatActivity implements SurfaceHolder.C
     private SurfaceHolder surfaceHolder;
     private String localPath;
     private EditText videoName;
+    private int UPLOAD_TIME=1;
+    //发消息，让录制一分钟后,提示上传
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what ==UPLOAD_TIME) {
+                stopVideo();
+            }
+        }
+    };
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,12 +89,12 @@ public class VideoActivity2 extends AppCompatActivity implements SurfaceHolder.C
         @Override
         public void onClick(View v) {
             if (v == start) {
+                handler.sendEmptyMessageDelayed(UPLOAD_TIME, 60000);
                 mediarecorder = new MediaRecorder();// 创建mediarecorder对象
                 // 设置录制视频源为Camera(相机)
                 mediarecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
                 // 设置录制完成后视频的封装格式THREE_GPP为3gp.MPEG_4为mp4
-                mediarecorder
-                        .setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                mediarecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
                 // 设置录制的视频编码h263 h264
                 mediarecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
                 // 设置视频录制的分辨率。必须放在设置编码和格式的后面，否则报错
@@ -106,47 +119,51 @@ public class VideoActivity2 extends AppCompatActivity implements SurfaceHolder.C
                 }
             }
             if (v == stop) {
-                if (mediarecorder != null) {
-                    // 停止录制
-                    mediarecorder.stop();
-                    // 释放资源
-                    mediarecorder.release();
-                    mediarecorder = null;
-                }
-                new AlertDialog.Builder(VideoActivity2.this)
-                        .setMessage("是否要保存")
-                        .setPositiveButton("保存",
-                                new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        dialog.dismiss();
-                                        sendVideo(null);
-
-                                    }
-                                })
-                        .setNegativeButton("取消",
-                                new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        if (localPath != null) {
-                                            File file = new File(localPath);
-                                            if (file.exists())
-                                                file.delete();
-                                        }
-                                        finish();
-
-                                    }
-                                }).setCancelable(false).show();
+                stopVideo();
             }
 
         }
 
     }
+public void stopVideo(){
+    if (mediarecorder != null) {
+        // 停止录制
+        mediarecorder.stop();
+        // 释放资源
+        mediarecorder.release();
+        mediarecorder = null;
+    }
+    new AlertDialog.Builder(VideoActivity2.this)
+            .setMessage("是否要保存")
+            .setPositiveButton("保存",
+                    new DialogInterface.OnClickListener() {
 
+                        @Override
+                        public void onClick(DialogInterface dialog,
+                                            int which) {
+                            handler.removeMessages(UPLOAD_TIME);
+                            dialog.dismiss();
+                            sendVideo(null);
+
+                        }
+                    })
+            .setNegativeButton("取消",
+                    new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog,
+                                            int which) {
+                            if (localPath != null) {
+                                File file = new File(localPath);
+                                if (file.exists())
+                                    file.delete();
+                            }
+                            handler.removeMessages(UPLOAD_TIME);
+                            finish();
+
+                        }
+                    }).setCancelable(false).show();
+}
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width,
                                int height) {
@@ -211,17 +228,17 @@ public class VideoActivity2 extends AppCompatActivity implements SurfaceHolder.C
 
     private void uploadVideoBmob() {
         final String vName = videoName.getText().toString();
-        final BmobFile bmobFile=new BmobFile(new File(localPath));
+        final BmobFile bmobFile = new BmobFile(new File(localPath));
         bmobFile.uploadblock(this, new UploadFileListener() {
             @Override
             public void onSuccess() {
                 //上传后的图片在服务器上的位置（网址）
-               String videoUrl = bmobFile.getFileUrl(VideoActivity2.this);
-                if(TextUtils.isEmpty(vName)){
+                String videoUrl = bmobFile.getFileUrl(VideoActivity2.this);
+                if (TextUtils.isEmpty(vName)) {
                     Toast.makeText(VideoActivity2.this, "视频名称不可为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                FoodVideo foodVideo=new FoodVideo();
+                FoodVideo foodVideo = new FoodVideo();
                 foodVideo.setUserInfo(BmobUser.getCurrentUser(VideoActivity2.this, UserInfo.class));
                 foodVideo.setVideoName(vName);
                 foodVideo.setVideoUrl(videoUrl);
@@ -246,5 +263,10 @@ public class VideoActivity2 extends AppCompatActivity implements SurfaceHolder.C
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler=null;
+    }
 }
 

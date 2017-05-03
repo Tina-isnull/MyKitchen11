@@ -10,16 +10,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.example.lcc.mykitchen.constant.Constant;
 import com.example.lcc.mykitchen.entity.UserInfo;
-import com.example.lcc.mykitchen.ui.MyBaseActivity;
+import com.example.lcc.mykitchen.activity.MyBaseActivity;
 import com.example.lcc.mykitchen.R;
 
-import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobSMS;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.QuerySMSStateListener;
 import cn.bmob.v3.listener.RequestSMSCodeListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.VerifySMSCodeListener;

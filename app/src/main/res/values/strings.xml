@@ -15,4 +15,12 @@
     <string name="money_count">我的钱包(币):</string>
     <!--第三方登录 -->
     <string name="qq_login">qq登录</string>
+    <!--注册 -->
+    <string name="register">注册</string>
+    <string name="register_name_hint">请输入用户名</string>
+    <string name="register_phone_hint">请输入手机号</string>
+    <string name="register_password_hint">请输入密码</string>
+    <string name="register_sure_hint">请再次输入密码</string>
+    <!-- -->
+    <string name="unLogin_toast">您还没有登录，请先登录</string>
 </resources>

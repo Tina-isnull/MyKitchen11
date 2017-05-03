@@ -89,10 +89,8 @@ public class ImageFetcher
 		try
 		{
 			long startTime = System.currentTimeMillis();
-
 			// 构造缩略图索引
 			getThumbnail();
-
 			// 构造相册索引
 			String columns[] = new String[] { Media._ID, Media.BUCKET_ID,
 					Media.DATA, Media.BUCKET_DISPLAY_NAME };

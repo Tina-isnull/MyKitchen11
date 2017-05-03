@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.MenuAddContentActivity">
+    tools:context=".activity.MenuAddContentActivity">
 
     <LinearLayout
         android:background="@color/white"

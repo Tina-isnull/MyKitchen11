@@ -35,14 +35,14 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Start" />
+            android:text="开始" />
 
         <Button
             android:id="@+id/stop"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Stop" />
+            android:text="停止" />
     </LinearLayout>
 
 </LinearLayout>

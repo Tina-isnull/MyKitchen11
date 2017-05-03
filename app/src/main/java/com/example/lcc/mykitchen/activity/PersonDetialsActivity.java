@@ -1,10 +1,7 @@
-package com.example.lcc.mykitchen.ui;
+package com.example.lcc.mykitchen.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.lcc.mykitchen.R;
@@ -22,10 +18,8 @@ import com.example.lcc.mykitchen.entity.FoodFromWeb;
 import com.example.lcc.mykitchen.entity.UploadMenuBean;
 import com.example.lcc.mykitchen.entity.UserInfo;
 import com.example.lcc.mykitchen.manager.HttpRequestManager;
-import com.example.lcc.mykitchen.sharemultiphoto.PublishActivity;
 import com.example.lcc.mykitchen.view.MyImageView;
 
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 

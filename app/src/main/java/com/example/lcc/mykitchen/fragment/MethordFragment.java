@@ -1,7 +1,9 @@
 package com.example.lcc.mykitchen.fragment;
 
 
+import com.example.lcc.mykitchen.MyApp;
 import com.example.lcc.mykitchen.adapter.SharePagerAdapter;
+import com.example.lcc.mykitchen.entity.UserInfo;
 import com.example.lcc.mykitchen.view.TabGroup;
 
 import android.content.Intent;
@@ -15,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.example.lcc.mykitchen.R;
 import com.example.lcc.mykitchen.zhibo.LivePublisherActivity;
@@ -46,7 +49,13 @@ public class MethordFragment extends BaseFragment {
         zhibo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(),LivePublisherActivity.class));
+                UserInfo userInfo=MyApp.bmobUser;
+                if(userInfo==null){
+                    Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
+                }else{
+                    startActivity(new Intent(getActivity(),LivePublisherActivity.class));
+                }
+
             }
         });
 

@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.lcc.mykitchen.MyApp;
-import com.example.lcc.mykitchen.ui.MyBaseActivity;
+import com.example.lcc.mykitchen.activity.MyBaseActivity;
 import com.example.lcc.mykitchen.R;
 
 import cn.bmob.v3.BmobUser;

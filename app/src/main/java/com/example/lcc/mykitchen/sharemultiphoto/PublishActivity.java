@@ -35,7 +35,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.example.lcc.mykitchen.MyApp;
-import com.example.lcc.mykitchen.ui.MainPagerActivity;
+import com.example.lcc.mykitchen.activity.MainPagerActivity;
 import com.example.lcc.mykitchen.R;
 
 import com.example.lcc.mykitchen.adapter.sharemultiphoto.ImagePublishAdapter;

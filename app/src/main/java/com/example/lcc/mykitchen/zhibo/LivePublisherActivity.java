@@ -31,13 +31,14 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.example.lcc.mykitchen.R;
+import com.example.lcc.mykitchen.activity.FlusMessage;
 import com.tencent.rtmp.ITXLivePushListener;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.rtmp.TXLivePushConfig;
 import com.tencent.rtmp.TXLivePusher;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 
-public class LivePublisherActivity extends RTMPBaseActivity implements View.OnClickListener, ITXLivePushListener, SeekBar.OnSeekBarChangeListener/*, ImageReader.OnImageAvailableListener*/ {
+public class LivePublisherActivity extends RTMPBaseActivity implements View.OnClickListener, ITXLivePushListener, SeekBar.OnSeekBarChangeListener, FlusMessage.messageShow/*, ImageReader.OnImageAvailableListener*/ {
     private static final String TAG = LivePublisherActivity.class.getSimpleName();
 
     private TXLivePushConfig mLivePushConfig;
@@ -71,14 +72,7 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
     private Handler mHandler = new Handler();
 
     private Bitmap mBitmap;
-
-//    private final int           REQUEST_CODE_CS = 10001;
-
-//    private MediaProjectionManager      mProjectionManager;
-//    private MediaProjection             mMediaProjection;
-//    private VirtualDisplay mVirtualDisplay         = null;
-//    private ImageReader mImageReader            = null;
-
+    private FlusMessage flusMessage;
     // 关注系统设置项“自动旋转”的状态切换
     private RotationObserver mRotationObserver = null;
 
@@ -97,15 +91,11 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
         setActivityType(RTMPBaseActivity.ACTIVITY_TYPE_PUBLISH);
         mLivePusher = new TXLivePusher(this);
         mLivePushConfig = new TXLivePushConfig();
-
         mBitmap = decodeResource(getResources(), R.drawable.watermark);
-
         mRotationObserver = new RotationObserver(new Handler());
         mRotationObserver.startObserver();
-
         initView();
         mCaptureView = (TXCloudVideoView) findViewById(R.id.video_view);
-
         mVideoPublish = false;
         mLogViewStatus.setVisibility(View.GONE);
         mLogViewStatus.setMovementMethod(new ScrollingMovementMethod());
@@ -115,7 +105,9 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
 
         //mRtmpUrlView.setHint(" 请扫码输入推流地址...");
         //mRtmpUrlView.setText("");
-
+        //刷新消息部分
+        flusMessage=new FlusMessage(this,this);
+        flusMessage.start();
 
         //美颜部分
         mFaceBeautyLayout = (LinearLayout) findViewById(R.id.layoutFaceBeauty);
@@ -125,7 +117,7 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
         mWhiteningSeekBar = (SeekBar) findViewById(R.id.whitening_seekbar);
         mWhiteningSeekBar.setOnSeekBarChangeListener(this);
 
-        mBtnFaceBeauty = (Button)findViewById(R.id.btnFaceBeauty);
+        mBtnFaceBeauty = (Button) findViewById(R.id.btnFaceBeauty);
         mBtnFaceBeauty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,7 +126,7 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
         });
 
         //播放部分
-        mBtnPlay = (Button)findViewById(R.id.btnPlay);
+        mBtnPlay = (Button) findViewById(R.id.btnPlay);
         mBtnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,7 +144,7 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
 
 
         //log部分
-        final Button btnLog = (Button)findViewById(R.id.btnLog);
+        final Button btnLog = (Button) findViewById(R.id.btnLog);
         btnLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,7 +163,7 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
         });
 
         //切换前置后置摄像头
-        final Button btnChangeCam = (Button)findViewById(R.id.btnCameraChange);
+        final Button btnChangeCam = (Button) findViewById(R.id.btnCameraChange);
         btnChangeCam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,7 +179,7 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
         });
 
         //开启硬件加速
-        mBtnHWEncode = (Button)findViewById(R.id.btnHWEncode);
+        mBtnHWEncode = (Button) findViewById(R.id.btnHWEncode);
         mBtnHWEncode.getBackground().setAlpha(mHWVideoEncode ? 255 : 100);
         mBtnHWEncode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -220,7 +212,7 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
 
         //码率自适应部分
         mBtnBitrate = (Button) findViewById(R.id.btnBitrate);
-        mBitrateLayout = (LinearLayout)findViewById(R.id.layoutBitrate);
+        mBitrateLayout = (LinearLayout) findViewById(R.id.layoutBitrate);
         mBtnBitrate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -239,7 +231,7 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
         });
 
         //闪光灯
-        mBtnFlashLight = (Button)findViewById(R.id.btnFlash);
+        mBtnFlashLight = (Button) findViewById(R.id.btnFlash);
         mBtnFlashLight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -258,7 +250,7 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
         });
 
         //手动对焦/自动对焦
-        mBtnTouchFocus = (Button)findViewById(R.id.btnTouchFoucs);
+        mBtnTouchFocus = (Button) findViewById(R.id.btnTouchFoucs);
         mBtnTouchFocus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -280,7 +272,7 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
         });
 
         //锁定Activity不旋转的情况下，才能进行横屏|竖屏推流切换
-        mBtnOrientation = (Button)findViewById(R.id.btnPushOrientation);
+        mBtnOrientation = (Button) findViewById(R.id.btnPushOrientation);
         if (isActivityCanRotation()) {
             mBtnOrientation.setVisibility(View.GONE);
         }
@@ -303,7 +295,7 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
             }
         });
 
-     // setOnClickListener(this);
+        // setOnClickListener(this);
         mLogViewStatus.setText("Log File Path:" + Environment.getExternalStorageDirectory().getAbsolutePath() + "/txRtmpLog");
     }
 
@@ -383,6 +375,7 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
         }
 
         mRotationObserver.stopObserver();
+         FlusMessage.isStop=true;
     }
 
     private boolean startPublishRtmp() {
@@ -484,7 +477,6 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
         Bitmap bitmap = decodeResource(getResources(), R.drawable.pause_publish);
         mLivePushConfig.setPauseImg(bitmap);
         mLivePushConfig.setPauseFlag(TXLiveConstants.PAUSE_FLAG_PAUSE_VIDEO | TXLiveConstants.PAUSE_FLAG_PAUSE_AUDIO);
-
         mLivePushConfig.setBeautyFilter(mBeautyLevel, mWhiteningLevel);
         mLivePusher.setConfig(mLivePushConfig);
         mLivePusher.setPushListener(this);
@@ -702,6 +694,17 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
             return false;
         }
         return true;
+    }
+
+    /**
+     * 显示观看者发过来的消息
+     *
+     * @param message
+     */
+    @Override
+    public void setInfos(String message) {
+        Log.d("TAG","push="+message);
+        mLogViewEvent.setText(message);
     }
 
     //观察屏幕旋转设置变化，类似于注册动态广播监听变化机制

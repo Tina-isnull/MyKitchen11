@@ -39,8 +39,6 @@ import com.example.lcc.mykitchen.utils.SpUtils;
 
 
 /**
- * qiangyu on 1/26/16 15:33
- * csdn博客:http://blog.csdn.net/yissan
  */
 public class CommonVideoView extends FrameLayout implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, View.OnTouchListener, View.OnClickListener, Animator.AnimatorListener, SeekBar.OnSeekBarChangeListener {
 

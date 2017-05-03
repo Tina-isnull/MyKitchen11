@@ -4,15 +4,15 @@ import cn.bmob.v3.BmobObject;
 
 public class Zan extends BmobObject{
 	
-	String shareUserId;//分享人
+	 ShareFriends shareId;//分享人
 	String userId;//本机用户
 
-	public String getShareUserId() {
-		return shareUserId;
+	public ShareFriends getShareId() {
+		return shareId;
 	}
 
-	public void setShareUserId(String shareUserId) {
-		this.shareUserId = shareUserId;
+	public void setShareId(ShareFriends shareId) {
+		this.shareId = shareId;
 	}
 
 	public String getUserId() {

@@ -1,9 +1,7 @@
-package com.example.lcc.mykitchen.ui;
+package com.example.lcc.mykitchen.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -11,13 +9,9 @@ import android.widget.ListView;
 
 import com.example.lcc.mykitchen.MyApp;
 import com.example.lcc.mykitchen.R;
-import com.example.lcc.mykitchen.adapter.CollectFoodAdapter;
 import com.example.lcc.mykitchen.adapter.FootprintAdapter;
-import com.example.lcc.mykitchen.entity.CollectionFood;
 import com.example.lcc.mykitchen.entity.FoodDetails;
 import com.example.lcc.mykitchen.entity.FootprintBean;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;

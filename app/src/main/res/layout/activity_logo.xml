@@ -3,16 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/logo_bag"
     android:orientation="vertical"
-    tools:context=".ui.LoginActivity">
+    tools:context=".activity.LoginActivity">
     <include layout="@layout/include_actionbar" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginTop="30dp"
         android:background="@drawable/shape_logo_userbag"
         android:orientation="horizontal" >
@@ -38,14 +37,14 @@
     <View
         style="@style/line"
         android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="13dp"
-        android:layout_marginRight="13dp" />
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:background="@drawable/shape_logo_userbag"
         android:orientation="horizontal" >
 
@@ -76,14 +75,14 @@
             android:id="@+id/tv_register_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="30dp"
             android:text="注册" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="30dp"
             android:text="忘记密码？" />
     </RelativeLayout>
 

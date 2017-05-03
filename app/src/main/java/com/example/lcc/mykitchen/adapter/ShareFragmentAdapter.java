@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.lcc.mykitchen.adapter.MyBaseAdapter;
+
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
@@ -40,6 +41,7 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+
 import com.example.lcc.mykitchen.constant.Constant;
 import com.example.lcc.mykitchen.entity.CollectKiter;
 import com.example.lcc.mykitchen.entity.Image;
@@ -63,9 +65,10 @@ public class ShareFragmentAdapter extends MyBaseAdapter<ShareContent> {
     DBUtils db = new DBUtils(context, 2);
     //控制输入面板的输入
     ShareFragment01.sendDynamic mSendDynamic;
+
     public ShareFragmentAdapter(Context context, ShareFragment01.sendDynamic mSendDynamic) {
         super(context);
-        this.mSendDynamic=mSendDynamic;
+        this.mSendDynamic = mSendDynamic;
     }
 
     @Override
@@ -133,6 +136,10 @@ public class ShareFragmentAdapter extends MyBaseAdapter<ShareContent> {
         viewHolder.focuse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (bmobUser == null) {
+                    Toast.makeText(context, context.getString(R.string.unLogin_toast), Toast.LENGTH_LONG).show();
+                    return;
+                }
                 viewHolder.focuse.setImageResource(R.drawable.rec_followed);
                /* CollectKiter kiter = new CollectKiter();
                 kiter.setId(shareItem.getUserInfo().getObjectId());
@@ -162,16 +169,19 @@ public class ShareFragmentAdapter extends MyBaseAdapter<ShareContent> {
         viewHolder.tvLove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (bmobUser == null) {
+                    Toast.makeText(context, context.getString(R.string.unLogin_toast), Toast.LENGTH_LONG).show();
+                    return;
+                }
                 BmobQuery<Zan> query = new BmobQuery<Zan>();
-                query.addWhereEqualTo("shareUserId", shareItem.getShareFriends().getObjectId());
                 query.addWhereEqualTo("userId", bmobUser.getObjectId());
                 query.findObjects(context, new FindListener<Zan>() {
                     @Override
                     public void onSuccess(List<Zan> list) {
-                        if(list!=null&&list.size()>0){
-                            Toast.makeText(context, "已经点过赞了",Toast.LENGTH_SHORT).show();
-                        }else{
-                            saveZan(shareItem.getShareFriends(), shareItem.getShareFriends().getObjectId(), bmobUser.getObjectId());
+                        if (list != null && list.size() > 0) {
+                            Toast.makeText(context, "已经点过赞了", Toast.LENGTH_SHORT).show();
+                        } else {
+                            saveZan(shareItem.getShareFriends(), bmobUser.getObjectId());
                         }
 
 
@@ -181,11 +191,11 @@ public class ShareFragmentAdapter extends MyBaseAdapter<ShareContent> {
                     public void onError(int i, String s) {
                         switch (i) {
                             case 101:
-                                saveZan(shareItem.getShareFriends(), shareItem.getShareFriends().getObjectId(), bmobUser.getObjectId());
+                                saveZan(shareItem.getShareFriends(), bmobUser.getObjectId());
                                 break;
 
                             default:
-                                Log.d("TAG","查询失败，错误代码:"+i+","+s);
+                                Log.d("TAG", "查询失败，错误代码:" + i + "," + s);
                                 break;
                         }
                     }
@@ -193,15 +203,15 @@ public class ShareFragmentAdapter extends MyBaseAdapter<ShareContent> {
 
             }
 
-            private void saveZan(final ShareFriends shareFriends, String shareId, String userId) {
-                Zan zan=new Zan();
-                zan.setShareUserId(shareId);
+            private void saveZan(final ShareFriends shareFriends, String userId) {
+                Zan zan = new Zan();
                 zan.setUserId(userId);
+                zan.setShareId(shareFriends);
                 zan.save(context, new SaveListener() {
                     @Override
                     public void onSuccess() {
                         //TODO 判断有没更新
-                        shareFriends.setCountLove(shareFriends.getCountLove()+1);
+                        shareFriends.setCountLove(shareFriends.getCountLove() + 1);
                         //更新数据源中赞的数量
                         notifyDataSetChanged();
                         shareFriends.update(context, new UpdateListener() {
@@ -226,27 +236,31 @@ public class ShareFragmentAdapter extends MyBaseAdapter<ShareContent> {
                 });
 
 
-
             }
         });
-       // ArrayAdapter<String> adapter=new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,shareItem.getCommentList());
-        final ArrayCommentAdapter cAdapter=new ArrayCommentAdapter(context);
+        // ArrayAdapter<String> adapter=new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,shareItem.getCommentList());
+        final ArrayCommentAdapter cAdapter = new ArrayCommentAdapter(context);
         viewHolder.commentList.setAdapter(cAdapter);
         viewHolder.commentList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                String item=cAdapter.getItem(position).getContent();
-                int index=item.indexOf("回")-1;
-                String name=item.substring(0,index);
-                if(bmobUser.getUsername().equals(name)){
+                if (bmobUser == null) {
+                    Toast.makeText(context, context.getString(R.string.unLogin_toast), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                String item = cAdapter.getItem(position).getContent();
+                int index = item.indexOf("回") - 1;
+                String name = item.substring(0, index);
+                if (bmobUser.getUsername().equals(name)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setMessage("要删除评论吗")
                             .setPositiveButton("是", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     cAdapter.removeData(shareItem.getCommentList().get(position));
+                                    notifyDataSetChanged();
                                     Comments comment = new Comments();
                                     comment.setObjectId(shareItem.getCommentList().get(position).getObjectId());
-                                    comment.delete(context,new DeleteListener() {
+                                    comment.delete(context, new DeleteListener() {
 
 
                                         @Override
@@ -266,27 +280,27 @@ public class ShareFragmentAdapter extends MyBaseAdapter<ShareContent> {
                                     dialog.cancel();
                                 }
                             }).show();
-                }else{
-                    mSendDynamic.sendVisible(shareItem.getShareFriends().getObjectId(),name);
+                } else {
+                    mSendDynamic.sendVisible(shareItem.getShareFriends().getObjectId(), name);
                 }
 
 
             }
         });
 
-        cAdapter.addDate(shareItem.getCommentList(),true);
+        cAdapter.addDate(shareItem.getCommentList(), true);
         cAdapter.notifyDataSetChanged();
         viewHolder.tvComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mSendDynamic.sendVisible(shareItem.getShareFriends().getObjectId(),shareItem.getShareFriends().getUserInfo().getUsername());
+                mSendDynamic.sendVisible(shareItem.getShareFriends().getObjectId(), shareItem.getShareFriends().getUserInfo().getUsername());
 
             }
         });
         viewHolder.tvShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showShare(position,shareItem.getShareFriends().getContent(),shareItem.getShareFriends().getImgs().get(1));
+                showShare(position, shareItem.getShareFriends().getContent(), shareItem.getShareFriends().getImgs().get(1));
             }
         });
 
@@ -294,8 +308,7 @@ public class ShareFragmentAdapter extends MyBaseAdapter<ShareContent> {
     }
 
 
-
-    protected void showShare(int pos,String text,String imgurl) {
+    protected void showShare(int pos, String text, String imgurl) {
         OnekeyShare oks = new OnekeyShare();
         //关闭sso授权
         oks.disableSSOWhenAuthorize();

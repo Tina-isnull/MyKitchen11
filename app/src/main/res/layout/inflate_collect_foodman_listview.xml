@@ -20,6 +20,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="12dp"
+            android:singleLine="true"
             android:textSize="15sp"
             android:layout_toEndOf="@id/img_collecaty_headerId"
             android:text="晶晶" />
@@ -31,6 +32,7 @@
             android:layout_alignParentBottom="true"
             android:paddingBottom="12dp"
             android:layout_marginLeft="5dp"
+            android:singleLine="true"
             android:layout_toEndOf="@id/img_collecaty_headerId"
             android:text="7分钟之前发布状态"
             android:textSize="12sp" />

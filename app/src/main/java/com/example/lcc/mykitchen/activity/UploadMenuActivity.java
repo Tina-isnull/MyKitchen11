@@ -1,4 +1,4 @@
-package com.example.lcc.mykitchen.ui;
+package com.example.lcc.mykitchen.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -142,7 +142,8 @@ public class UploadMenuActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int i, String s) {
-
+                Toast.makeText(UploadMenuActivity.this, "上传失败 "+s
+                        , Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -230,7 +231,6 @@ public class UploadMenuActivity extends AppCompatActivity {
         Intent intent1 = new Intent(Intent.ACTION_PICK);
         //MIME格式 image/* 表示所有图片
         intent1.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-
         //打开拍照的隐式意图
         Intent intent2 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), System.currentTimeMillis() + ".jpg");

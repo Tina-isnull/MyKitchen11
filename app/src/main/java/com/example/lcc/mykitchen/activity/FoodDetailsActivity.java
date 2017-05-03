@@ -1,4 +1,4 @@
-package com.example.lcc.mykitchen.ui;
+package com.example.lcc.mykitchen.activity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,12 +15,15 @@ import com.example.lcc.mykitchen.R;
 import com.example.lcc.mykitchen.adapter.FoodDetailAdapter;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 
-import com.example.lcc.mykitchen.entity.CollectFood;
 import com.example.lcc.mykitchen.entity.CollectionFood;
 import com.example.lcc.mykitchen.entity.FoodDetails;
 import com.example.lcc.mykitchen.manager.HttpRequestManager;
+
+import java.util.List;
 
 public class FoodDetailsActivity extends MyBaseActivity {
     @Bind(R.id.list_food_detail)
@@ -28,6 +31,7 @@ public class FoodDetailsActivity extends MyBaseActivity {
     String material;
     FoodDetailAdapter adapter;
     private FoodDetails detail;
+    ImageView like;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +46,15 @@ public class FoodDetailsActivity extends MyBaseActivity {
     public void initialUI() {
         actionBar = (LinearLayout) findViewById(R.id.llActionbarId);
         initActionbar(R.drawable.go_back_normal, "详情", R.drawable.like);
-        ImageView like= (ImageView) actionBar.findViewById(R.id.imgRightActionbarId);
+       like= (ImageView) actionBar.findViewById(R.id.imgRightActionbarId);
+        isCollect();
         like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CollectionFood collectFood=new CollectionFood();
                 collectFood.setFoodDetails(detail);
+                like.setImageResource(R.drawable.have_like);
+                like.setClickable(false);
                 collectFood.setUserId(MyApp.bmobUser.getObjectId());
                 collectFood.save(FoodDetailsActivity.this, new SaveListener() {
                     @Override
@@ -114,5 +121,32 @@ public class FoodDetailsActivity extends MyBaseActivity {
         adapter=new FoodDetailAdapter(this);
         adapter.addDate(detail.getDetial().getSteps(),false);
         listview.setAdapter(adapter);
+    }
+
+    public void isCollect(){
+        BmobQuery<CollectionFood> query=new BmobQuery<>();
+        query.addWhereEqualTo("userId",MyApp.bmobUser.getObjectId());
+        query.findObjects(FoodDetailsActivity.this, new FindListener<CollectionFood>() {
+            @Override
+            public void onSuccess(List<CollectionFood> list) {
+                if(list!=null&&list.size()!=0){
+                    for(int i=0;i<list.size();i++){
+                      if(detail.getName().equals(list.get(i).getFoodDetails().getName())){
+                          like.setImageResource(R.drawable.have_like);
+                          like.setClickable(false);
+                          return;
+                        }
+
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onError(int i, String s) {
+
+            }
+        });
     }
 }

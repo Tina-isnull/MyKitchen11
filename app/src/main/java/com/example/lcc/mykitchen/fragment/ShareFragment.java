@@ -5,14 +5,11 @@ import com.example.lcc.mykitchen.MyApp;
 import com.example.lcc.mykitchen.adapter.SharePagerAdapter;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +28,6 @@ import com.example.lcc.mykitchen.entity.Comments;
 import com.example.lcc.mykitchen.entity.UserInfo;
 import com.example.lcc.mykitchen.sharemultiphoto.PublishActivity;
 
-import com.example.lcc.mykitchen.ui.SearchActivity;
 import com.example.lcc.mykitchen.view.TabGroup;
 
 import cn.bmob.v3.listener.SaveListener;

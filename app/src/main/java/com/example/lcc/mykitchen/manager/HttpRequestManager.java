@@ -57,8 +57,7 @@ public class HttpRequestManager {
     public static void requestFood(String foodname, final loadFoodListener listener) {
         try {
             foodname = URLEncoder.encode(foodname, "utf8");
-            String url = "http://apis.juhe.cn/cook/query?menu=" +
-                    foodname +
+            String url = "http://apis.juhe.cn/cook/query?menu=" +foodname +
                     "&dtype=&pn=&rn=10&albums=&=&key=af876b753d435da8de2e31323098d1f9";
             StringRequest request = new StringRequest(url, new Response.Listener<String>() {
                 @Override

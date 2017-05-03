@@ -1,4 +1,4 @@
-package com.example.lcc.mykitchen.ui;
+package com.example.lcc.mykitchen.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
