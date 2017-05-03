@@ -67,6 +67,7 @@ public class UploadMenuActivity extends AppCompatActivity {
     private ImageView imgStep;
     private List<FoodFromWeb.Steps> lists;
     private TextView imgUrl;
+    private UserInfo bmobUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +76,7 @@ public class UploadMenuActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         bean = new UploadMenuBean();
         lists = new ArrayList<>();
-
+        bmobUser = BmobUser.getCurrentUser(this, UserInfo.class);
     }
 
     @OnClick(R.id.ll_upload_material)
@@ -117,7 +118,7 @@ public class UploadMenuActivity extends AppCompatActivity {
                 Toast.makeText(UploadMenuActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
                 //获得是10个厨币
                 UserInfo userInfo=new UserInfo();
-                String money=MyApp.bmobUser.getMoney();
+                String money=bmobUser.getMoney();
                 if(TextUtils.isEmpty(money)){
                     money=10+"";
                 }else{

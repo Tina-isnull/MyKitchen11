@@ -26,7 +26,7 @@ import java.util.List;
  */
 public class MyApp extends Application {
     public static MyApp context;
-    public static UserInfo bmobUser;
+    private  UserInfo bmobUser;
     public static List<String> relatedName;
 
     @Override

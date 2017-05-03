@@ -14,14 +14,17 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.example.lcc.mykitchen.R;
+import com.example.lcc.mykitchen.entity.UserInfo;
 
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.FindListener;
 
 public class CollectActivity extends MyBaseActivity {
 private   CollectFoodAdapter adapter;
+    private UserInfo bmobUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +38,7 @@ private   CollectFoodAdapter adapter;
         //初始化ActionBar
         actionBar = (LinearLayout)findViewById(R.id.llActionbarId);
         initActionbar(R.drawable.go_back_normal, "您的收藏", R.drawable.collect_delete);
+        bmobUser = BmobUser.getCurrentUser(this, UserInfo.class);
         //初始化ListView
         initListView();
     }
@@ -61,7 +65,7 @@ private   CollectFoodAdapter adapter;
     protected void onResume() {
         super.onResume();
         BmobQuery<CollectionFood> query=new BmobQuery<>();
-        query.addWhereEqualTo("userId",MyApp.bmobUser.getObjectId());
+        query.addWhereEqualTo("userId",bmobUser.getObjectId());
         query.findObjects(CollectActivity.this, new FindListener<CollectionFood>() {
             @Override
             public void onSuccess(List<CollectionFood> list) {

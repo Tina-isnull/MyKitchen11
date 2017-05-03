@@ -37,6 +37,7 @@ import com.tencent.rtmp.TXLivePlayConfig;
 import com.tencent.rtmp.TXLivePlayer;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.SaveListener;
 
 public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayListener, View.OnClickListener,FlusMessage.messageShow{
@@ -163,7 +164,7 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
             @Override
             public void onClick(View v) {
                 String text = intput.getText().toString();
-                String Content = MyApp.bmobUser.getUsername() + " : " + text;
+                String Content = BmobUser.getCurrentUser(LivePlayerActivity.this, UserInfo.class).getUsername() + " : " + text;
                 ChatInfo info = new ChatInfo();
                 info.setChatContent(Content);
                 info.save(LivePlayerActivity.this, new SaveListener() {

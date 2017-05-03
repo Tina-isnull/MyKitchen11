@@ -20,10 +20,12 @@ package com.example.lcc.mykitchen.activity;
         import java.util.List;
 
         import cn.bmob.v3.BmobQuery;
+        import cn.bmob.v3.BmobUser;
         import cn.bmob.v3.listener.FindListener;
 
 public class FocusActivity extends MyBaseActivity {
 private ForceManAdapter adapter;
+    private UserInfo bmobUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +39,7 @@ private ForceManAdapter adapter;
         //初始化ActionBar
         actionBar = (LinearLayout)findViewById(R.id.llActionbarId);
         initActionbar(R.drawable.go_back_normal, "关注的人", R.drawable.collect_delete);
+        bmobUser = BmobUser.getCurrentUser(this, UserInfo.class);
         //初始化ListView
         ListView collectListview=(ListView) findViewById(R.id.listview_myf_focusId);
         adapter=new ForceManAdapter(this);
@@ -53,7 +56,7 @@ private ForceManAdapter adapter;
         final List<UserInfo> focusList= new ArrayList<>();
         BmobQuery<RelatedPartner> query = new BmobQuery<>();
         query.include("relatedName");
-        query.addWhereEqualTo("userName", MyApp.bmobUser.getObjectId());
+        query.addWhereEqualTo("userName", bmobUser.getObjectId());
         query.findObjects(this, new FindListener<RelatedPartner>() {
             @Override
             public void onSuccess(List<RelatedPartner> list) {

@@ -12,16 +12,19 @@ import com.example.lcc.mykitchen.R;
 import com.example.lcc.mykitchen.adapter.FootprintAdapter;
 import com.example.lcc.mykitchen.entity.FoodDetails;
 import com.example.lcc.mykitchen.entity.FootprintBean;
+import com.example.lcc.mykitchen.entity.UserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.FindListener;
 
 public class FootprintActivity extends MyBaseActivity {
     private  FootprintAdapter adapter;
     private List<FootprintBean> footprints;
+    private UserInfo bmobUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +38,7 @@ public class FootprintActivity extends MyBaseActivity {
         //初始化ActionBar
         actionBar = (LinearLayout)findViewById(R.id.llActionbarId);
         initActionbar(R.drawable.go_back_normal, "我的足迹", R.drawable.collect_delete);
-
+        bmobUser = BmobUser.getCurrentUser(this, UserInfo.class);
         footprints=new ArrayList<>();
         ListView FootListView = (ListView) findViewById(R.id.listview_myf_collectId);
         adapter = new FootprintAdapter(this);
@@ -55,7 +58,7 @@ public class FootprintActivity extends MyBaseActivity {
     protected void onResume() {
         super.onResume();
         BmobQuery<FootprintBean> query=new BmobQuery<>();
-        query.addWhereEqualTo("userId", MyApp.bmobUser.getObjectId());
+        query.addWhereEqualTo("userId", bmobUser.getObjectId());
         query.findObjects(FootprintActivity.this, new FindListener<FootprintBean>() {
             @Override
             public void onSuccess(List<FootprintBean> list) {

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.lcc.mykitchen.MyApp;
 import com.example.lcc.mykitchen.R;
+import com.example.lcc.mykitchen.entity.UserInfo;
 import com.example.lcc.mykitchen.make_children.CountAlterActivity;
 import com.example.lcc.mykitchen.make_children.passWordAlterActivity;
 
@@ -27,6 +28,7 @@ public class MakeActivity extends MyBaseActivity implements View.OnClickListener
     private SpUtils sp;
     private TextView tvClear;
     private  File cacheFile;
+    private UserInfo bmobUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class MakeActivity extends MyBaseActivity implements View.OnClickListener
         sp = new SpUtils(this, Constant.USER_INFO);
         //初始化ActionBar
         actionBar = (LinearLayout) findViewById(R.id.llActionbarId);
+        bmobUser = BmobUser.getCurrentUser(this, UserInfo.class);
         initActionbar(R.drawable.go_back_normal, "设置", -1);
         //获得控件
         RelativeLayout makeCount = (RelativeLayout) findViewById(R.id.rl_make_countId);
@@ -72,7 +75,7 @@ public class MakeActivity extends MyBaseActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rl_make_countId:
-                String phone= MyApp.bmobUser.getMobilePhoneNumber();
+                String phone= bmobUser.getMobilePhoneNumber();
                 if(TextUtils.isEmpty(phone)){
                     startActivity(new Intent(this, CountAlterActivity.class));
                 }else{

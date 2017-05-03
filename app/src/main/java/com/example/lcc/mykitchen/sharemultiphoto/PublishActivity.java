@@ -150,7 +150,7 @@ public class PublishActivity extends Activity {
             public void onClick(View v) {
                 //获得是10个厨币
                 UserInfo userInfo=new UserInfo();
-                String money=MyApp.bmobUser.getMoney();
+                String money=BmobUser.getCurrentUser(PublishActivity.this, UserInfo.class).getMoney();
                 if(TextUtils.isEmpty(money)){
                     money=10+"";
                 }else{

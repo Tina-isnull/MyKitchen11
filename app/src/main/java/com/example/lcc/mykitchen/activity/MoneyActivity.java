@@ -13,6 +13,8 @@ import com.example.lcc.mykitchen.R;
 import com.example.lcc.mykitchen.entity.UserInfo;
 import com.example.lcc.mykitchen.sharemultiphoto.PublishActivity;
 
+import cn.bmob.v3.BmobUser;
+
 public class MoneyActivity extends MyBaseActivity {
 private TextView moneyCount;
     @Override
@@ -28,7 +30,7 @@ private TextView moneyCount;
         actionBar = (LinearLayout)findViewById(R.id.llActionbarId);
         initActionbar(R.drawable.go_back_normal, "我的钱包", R.drawable.collect_delete);
         moneyCount= (TextView) findViewById(R.id.tv_money_count);
-        UserInfo userInfo= MyApp.bmobUser;
+        UserInfo userInfo=  BmobUser.getCurrentUser(this, UserInfo.class);
         String money=userInfo.getMoney();
         if(TextUtils.isEmpty(money)){
             moneyCount.setText("0");

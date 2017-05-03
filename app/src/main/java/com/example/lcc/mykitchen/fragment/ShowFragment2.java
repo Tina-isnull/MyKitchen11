@@ -51,6 +51,7 @@ import com.example.lcc.mykitchen.entity.FoodDetails;
 import com.example.lcc.mykitchen.manager.HideSoftKeyboard;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 
@@ -74,7 +75,7 @@ public class ShowFragment2 extends BaseFragment {
     Handler mHandler = new Handler();
     List<UserInfo> kitterLists;
     private ShowRecyclerAdapter mAdapter;
-
+private UserInfo bmobUser;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         contentView = inflater.inflate(R.layout.fragment_show2, container, false);
@@ -89,6 +90,7 @@ public class ShowFragment2 extends BaseFragment {
 
     @Override
     public void initUI() {
+        bmobUser = BmobUser.getCurrentUser(getActivity(), UserInfo.class);
         scrollView = (HorizontalScrollView) contentView.findViewById(R.id.hscrollview_show);
         addCookBook = (ImageView) contentView.findViewById(R.id.img_show_add);
         tvFoodName = (TextView) contentView.findViewById(R.id.etActionbarId);
@@ -171,7 +173,7 @@ public class ShowFragment2 extends BaseFragment {
 //存储足迹
                 FootprintBean footprintBean = new FootprintBean();
                 footprintBean.setFoodDetails(steps);
-                footprintBean.setUserId(MyApp.bmobUser.getObjectId());
+                footprintBean.setUserId(bmobUser.getObjectId());
                 footprintBean.save(getActivity(), new SaveListener() {
                     @Override
                     public void onSuccess() {

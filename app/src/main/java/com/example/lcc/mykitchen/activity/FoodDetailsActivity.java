@@ -16,11 +16,13 @@ import com.example.lcc.mykitchen.adapter.FoodDetailAdapter;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 
 import com.example.lcc.mykitchen.entity.CollectionFood;
 import com.example.lcc.mykitchen.entity.FoodDetails;
+import com.example.lcc.mykitchen.entity.UserInfo;
 import com.example.lcc.mykitchen.manager.HttpRequestManager;
 
 import java.util.List;
@@ -32,6 +34,7 @@ public class FoodDetailsActivity extends MyBaseActivity {
     FoodDetailAdapter adapter;
     private FoodDetails detail;
     ImageView like;
+    private UserInfo bmobUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,7 @@ public class FoodDetailsActivity extends MyBaseActivity {
         actionBar = (LinearLayout) findViewById(R.id.llActionbarId);
         initActionbar(R.drawable.go_back_normal, "详情", R.drawable.like);
        like= (ImageView) actionBar.findViewById(R.id.imgRightActionbarId);
+        bmobUser = BmobUser.getCurrentUser(this, UserInfo.class);
         isCollect();
         like.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +59,7 @@ public class FoodDetailsActivity extends MyBaseActivity {
                 collectFood.setFoodDetails(detail);
                 like.setImageResource(R.drawable.have_like);
                 like.setClickable(false);
-                collectFood.setUserId(MyApp.bmobUser.getObjectId());
+                collectFood.setUserId(bmobUser.getObjectId());
                 collectFood.save(FoodDetailsActivity.this, new SaveListener() {
                     @Override
                     public void onSuccess() {
@@ -125,7 +129,7 @@ public class FoodDetailsActivity extends MyBaseActivity {
 
     public void isCollect(){
         BmobQuery<CollectionFood> query=new BmobQuery<>();
-        query.addWhereEqualTo("userId",MyApp.bmobUser.getObjectId());
+        query.addWhereEqualTo("userId",bmobUser.getObjectId());
         query.findObjects(FoodDetailsActivity.this, new FindListener<CollectionFood>() {
             @Override
             public void onSuccess(List<CollectionFood> list) {

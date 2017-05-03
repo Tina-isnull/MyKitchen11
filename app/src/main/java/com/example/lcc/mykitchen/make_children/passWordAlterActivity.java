@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.example.lcc.mykitchen.MyApp;
 import com.example.lcc.mykitchen.activity.MyBaseActivity;
 import com.example.lcc.mykitchen.R;
+import com.example.lcc.mykitchen.entity.UserInfo;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.UpdateListener;
@@ -42,7 +43,7 @@ public class passWordAlterActivity extends MyBaseActivity {
             public void onClick(View v) {
                 String oldPass = old.getText().toString();
                 String newPass = newP.getText().toString();
-                BmobUser user = MyApp.bmobUser;
+                BmobUser user = BmobUser.getCurrentUser(passWordAlterActivity.this, UserInfo.class);
                 Log.i("lcc=====>","oldPass="+oldPass);
                 Log.i("lcc=====>","newPass="+newPass);
 

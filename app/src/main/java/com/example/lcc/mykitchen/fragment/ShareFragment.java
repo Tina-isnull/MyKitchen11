@@ -30,6 +30,7 @@ import com.example.lcc.mykitchen.sharemultiphoto.PublishActivity;
 
 import com.example.lcc.mykitchen.view.TabGroup;
 
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.SaveListener;
 
 /**
@@ -47,6 +48,7 @@ public class ShareFragment extends BaseFragment implements ShareFragment01.sendD
     private TextView tv_send;
     private String shareId;
     private String shareToName;
+    private UserInfo bmobUser;
     public ShareFragment() {
     }
 
@@ -61,6 +63,7 @@ public class ShareFragment extends BaseFragment implements ShareFragment01.sendD
     public void initUI() {
         actionBar = (LinearLayout) contentView.findViewById(R.id.llActionbarId);
         initActionbar(-1, "分享美食", -1);
+        bmobUser= BmobUser.getCurrentUser(getActivity(), UserInfo.class);
         ImageView share = (ImageView) contentView.findViewById(R.id.img_share_cameraId);
         share.setOnClickListener(new shareOnClick());
         //评论部分
@@ -88,7 +91,7 @@ public class ShareFragment extends BaseFragment implements ShareFragment01.sendD
             @Override
             public void onClick(View v) {
                 String text=et_comment_big.getText().toString();
-                String Content=MyApp.bmobUser.getUsername()+" 回复 "+shareToName+":"+text;
+                String Content=bmobUser.getUsername()+" 回复 "+shareToName+":"+text;
                 Comments comment=new Comments();
                 comment.setShareId(shareId);
                 comment.setContent(Content);
@@ -187,7 +190,7 @@ public class ShareFragment extends BaseFragment implements ShareFragment01.sendD
     }
 
     public void startEditext(String comment) {
-        UserInfo bmobUser = MyApp.bmobUser;
+        UserInfo bmobUser =BmobUser.getCurrentUser(getActivity(), UserInfo.class);
         if (bmobUser == null) {
             Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
 

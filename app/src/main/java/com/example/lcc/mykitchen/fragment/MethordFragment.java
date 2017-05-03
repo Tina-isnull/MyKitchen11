@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.example.lcc.mykitchen.R;
 import com.example.lcc.mykitchen.zhibo.LivePublisherActivity;
 
+import cn.bmob.v3.BmobUser;
+
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass.
  *
@@ -49,7 +51,7 @@ public class MethordFragment extends BaseFragment {
         zhibo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserInfo userInfo=MyApp.bmobUser;
+                UserInfo userInfo= BmobUser.getCurrentUser(getActivity(), UserInfo.class);;
                 if(userInfo==null){
                     Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
                 }else{

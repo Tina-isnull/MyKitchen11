@@ -60,7 +60,7 @@ import com.example.lcc.mykitchen.view.NineGridLayout;
  * Created by lcc on 2016/12/12.
  */
 public class ShareFragmentAdapter extends MyBaseAdapter<ShareContent> {
-    UserInfo bmobUser = MyApp.bmobUser;
+    UserInfo bmobUser = BmobUser.getCurrentUser(context, UserInfo.class);;
     SpUtils sp = new SpUtils(context, Constant.USER_INFO);
     DBUtils db = new DBUtils(context, 2);
     //控制输入面板的输入
