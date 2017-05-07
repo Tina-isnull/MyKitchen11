@@ -104,7 +104,8 @@ public class VideoFragment2 extends Fragment {
         super.onResume();
         VideoWeb videoWeb=new VideoWeb();
         videoWeb.setImg(R.drawable.video_food1);
-        videoWeb.setUrl("rtmp://6505.liveplay.myqcloud.com/live/6505_12265c2e4a");
+        videoWeb.setUrl("rtmp://6505.liveplay.myqcloud.com/live/6505_5115940c0e");
         list.add(videoWeb);
+        adapter.notifyDataSetChanged();
     }
 }

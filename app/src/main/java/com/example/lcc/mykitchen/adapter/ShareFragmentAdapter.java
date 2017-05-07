@@ -60,7 +60,7 @@ import com.example.lcc.mykitchen.view.NineGridLayout;
  * Created by lcc on 2016/12/12.
  */
 public class ShareFragmentAdapter extends MyBaseAdapter<ShareContent> {
-    UserInfo bmobUser = BmobUser.getCurrentUser(context, UserInfo.class);;
+
     SpUtils sp = new SpUtils(context, Constant.USER_INFO);
     DBUtils db = new DBUtils(context, 2);
     //控制输入面板的输入
@@ -70,6 +70,8 @@ public class ShareFragmentAdapter extends MyBaseAdapter<ShareContent> {
         super(context);
         this.mSendDynamic = mSendDynamic;
     }
+
+    UserInfo bmobUser = BmobUser.getCurrentUser(context, UserInfo.class);
 
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
@@ -120,15 +122,18 @@ public class ShareFragmentAdapter extends MyBaseAdapter<ShareContent> {
         //如果用户没有登录，则不会有用户信息，则全部显示信息
         if (bmobUser != null) {
             if (shareItem.getShareFriends().getUserInfo().getObjectId().equals(bmobUser.getObjectId())) {
-                viewHolder.focuse.setVisibility(View.GONE);
+                viewHolder.focuse.setVisibility(View.INVISIBLE);
+            }else{
+                viewHolder.focuse.setVisibility(View.VISIBLE);
             }
             //关注的人直接显示已经关注
             List<String> focus = MyApp.relatedName;
             if (focus.size() > 0 && focus != null) {
                 for (String list : focus) {
                     if (list.equals(shareItem.getShareFriends().getUserInfo().getObjectId()))
+                        viewHolder.focuse.setVisibility(View.VISIBLE);
                         viewHolder.focuse.setImageResource(R.drawable.rec_followed);
-                    viewHolder.focuse.setEnabled(false);
+                        viewHolder.focuse.setEnabled(false);
                 }
             }
         }
@@ -174,16 +179,20 @@ public class ShareFragmentAdapter extends MyBaseAdapter<ShareContent> {
                     return;
                 }
                 BmobQuery<Zan> query = new BmobQuery<Zan>();
-                query.addWhereEqualTo("userId", bmobUser.getObjectId());
                 query.findObjects(context, new FindListener<Zan>() {
                     @Override
                     public void onSuccess(List<Zan> list) {
                         if (list != null && list.size() > 0) {
-                            Toast.makeText(context, "已经点过赞了", Toast.LENGTH_SHORT).show();
+                            for (int i = 0; i < list.size(); i++) {
+                                if (list.get(i).getDynamicId().equals(shareItem.getShareFriends().getObjectId()) && list.get(i).getUserId().equals(bmobUser.getObjectId())) {
+                                    Toast.makeText(context, "已经点过赞了", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                            }
+                            saveZan(shareItem.getShareFriends(), bmobUser.getObjectId());
                         } else {
                             saveZan(shareItem.getShareFriends(), bmobUser.getObjectId());
                         }
-
 
                     }
 
@@ -206,25 +215,26 @@ public class ShareFragmentAdapter extends MyBaseAdapter<ShareContent> {
             private void saveZan(final ShareFriends shareFriends, String userId) {
                 Zan zan = new Zan();
                 zan.setUserId(userId);
-                zan.setShareId(shareFriends);
+                zan.setDynamicId(shareItem.getShareFriends().getObjectId());
                 zan.save(context, new SaveListener() {
                     @Override
                     public void onSuccess() {
                         //TODO 判断有没更新
-                        shareFriends.setCountLove(shareFriends.getCountLove() + 1);
-                        //更新数据源中赞的数量
-                        notifyDataSetChanged();
+                        shareFriends.setCountLove(shareItem.getShareFriends().getCountLove() + 1);
                         shareFriends.update(context, new UpdateListener() {
                             @Override
                             public void onSuccess() {
                                 Toast.makeText(context, "点赞成功", Toast.LENGTH_SHORT).show();
+                                //更新数据源中赞的数量
+                                notifyDataSetChanged();
+                                return;
 
                             }
 
                             @Override
                             public void onFailure(int i, String s) {
                                 Toast.makeText(context, "点赞失败" + i + "," + s, Toast.LENGTH_SHORT).show();
-
+                                return;
                             }
                         });
                     }
@@ -266,6 +276,7 @@ public class ShareFragmentAdapter extends MyBaseAdapter<ShareContent> {
                                         @Override
                                         public void onSuccess() {
                                             Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
+                                            notifyDataSetChanged();
                                         }
 
                                         @Override

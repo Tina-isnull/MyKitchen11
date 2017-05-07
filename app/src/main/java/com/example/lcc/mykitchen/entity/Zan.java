@@ -4,15 +4,15 @@ import cn.bmob.v3.BmobObject;
 
 public class Zan extends BmobObject{
 	
-	 ShareFriends shareId;//分享人
+	 String  dynamicId;//分享人
 	String userId;//本机用户
 
-	public ShareFriends getShareId() {
-		return shareId;
+	public String getDynamicId() {
+		return dynamicId;
 	}
 
-	public void setShareId(ShareFriends shareId) {
-		this.shareId = shareId;
+	public void setDynamicId(String dynamicId) {
+		this.dynamicId = dynamicId;
 	}
 
 	public String getUserId() {

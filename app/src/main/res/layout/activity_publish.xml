@@ -34,7 +34,7 @@
         android:layout_marginBottom="60dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="167dp"
+        android:layout_marginTop="280dp"
         android:background="#60ffffff"
         android:fadeScrollbars="true"
         android:scrollbars="vertical">
@@ -69,6 +69,7 @@
             android:layout_weight="1"
             android:background="@drawable/camera_change" />
 
+
         <Button
             android:id="@+id/btnTouchFoucs"
             android:layout_width="wrap_content"
@@ -93,6 +94,7 @@
 
         <Button
             android:id="@+id/btnLog"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

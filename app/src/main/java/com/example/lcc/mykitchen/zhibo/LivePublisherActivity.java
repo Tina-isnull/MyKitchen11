@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.example.lcc.mykitchen.R;
 import com.example.lcc.mykitchen.activity.FlusMessage;
+import com.example.lcc.mykitchen.activity.FlusMessagePlay;
 import com.tencent.rtmp.ITXLivePushListener;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.rtmp.TXLivePushConfig;
@@ -40,11 +41,9 @@ import com.tencent.rtmp.ui.TXCloudVideoView;
 
 public class LivePublisherActivity extends RTMPBaseActivity implements View.OnClickListener, ITXLivePushListener, SeekBar.OnSeekBarChangeListener, FlusMessage.messageShow/*, ImageReader.OnImageAvailableListener*/ {
     private static final String TAG = LivePublisherActivity.class.getSimpleName();
-
     private TXLivePushConfig mLivePushConfig;
     private TXLivePusher mLivePusher;
     private TXCloudVideoView mCaptureView;
-
     private LinearLayout mBitrateLayout;
     private LinearLayout mFaceBeautyLayout;
     private SeekBar mBeautySeekBar;
@@ -59,7 +58,6 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
     private Button mBtnHWEncode;
     private Button mBtnOrientation;
     private boolean mPortrait = true;         //手动切换，横竖屏推流
-
     private boolean mVideoPublish;
     private boolean mFrontCamera = true;
     private boolean mHWVideoEncode = false;
@@ -68,9 +66,7 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
     private boolean mHWListConfirmDialogResult = false;
     private int mBeautyLevel = 0;
     private int mWhiteningLevel = 0;
-
     private Handler mHandler = new Handler();
-
     private Bitmap mBitmap;
     private FlusMessage flusMessage;
     // 关注系统设置项“自动旋转”的状态切换
@@ -96,15 +92,13 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
         mRotationObserver.startObserver();
         initView();
         mCaptureView = (TXCloudVideoView) findViewById(R.id.video_view);
-        mVideoPublish = false;
+        mVideoPublish = true;
         mLogViewStatus.setVisibility(View.GONE);
         mLogViewStatus.setMovementMethod(new ScrollingMovementMethod());
         mLogViewEvent.setMovementMethod(new ScrollingMovementMethod());
         mScrollView = (ScrollView) findViewById(R.id.scrollview);
-        mScrollView.setVisibility(View.GONE);
-
-        //mRtmpUrlView.setHint(" 请扫码输入推流地址...");
-        //mRtmpUrlView.setText("");
+        mScrollView.setVisibility(View.VISIBLE);
+        FlusMessage.isStop=false;
         //刷新消息部分
         flusMessage=new FlusMessage(this,this);
         flusMessage.start();
@@ -124,9 +118,10 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
                 mFaceBeautyLayout.setVisibility(mFaceBeautyLayout.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
             }
         });
-
         //播放部分
         mBtnPlay = (Button) findViewById(R.id.btnPlay);
+        FixOrAdjustBitrate();  //根据设置确定是“固定”还是“自动”码率
+        mVideoPublish = startPublishRtmp();
         mBtnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,18 +136,20 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
                 }
             }
         });
-
-
         //log部分
-        final Button btnLog = (Button) findViewById(R.id.btnLog);
+        /**
+         * 暂时不要
+         */
+       /* final Button btnLog = (Button) findViewById(R.id.btnLog);
         btnLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mLogViewStatus.getVisibility() == View.GONE) {
                     mLogViewStatus.setVisibility(View.VISIBLE);
                     mScrollView.setVisibility(View.VISIBLE);
-                    mLogViewEvent.setText(mLogMsg);
-                    scroll2Bottom(mScrollView, mLogViewEvent);
+                    Log.d("publishTAG","mLogMsg="+mLogMsg);
+                   // mLogViewEvent.setText(mLogMsg);
+                   // scroll2Bottom(mScrollView, mLogViewEvent);
                     btnLog.setBackgroundResource(R.drawable.log_hidden);
                 } else {
                     mLogViewStatus.setVisibility(View.GONE);
@@ -161,7 +158,7 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
                 }
             }
         });
-
+*/
         //切换前置后置摄像头
         final Button btnChangeCam = (Button) findViewById(R.id.btnCameraChange);
         btnChangeCam.setOnClickListener(new View.OnClickListener() {
@@ -379,100 +376,17 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
     }
 
     private boolean startPublishRtmp() {
-        String rtmpUrl = "rtmp://6505.livepush.myqcloud.com/live/6505_12265c2e4a?bizid=6505&txSecret=395dda21e57281d170f1a89f2fd584e5&txTime=58FCCF7F";
+        String rtmpUrl = "rtmp://6505.livepush.myqcloud.com/live/6505_5115940c0e?bizid=6505&txSecret=c2afa93ff3049e3d94f8f9ea197643ed&txTime=590F447F";
         if (TextUtils.isEmpty(rtmpUrl) || (!rtmpUrl.trim().toLowerCase().startsWith("rtmp://"))) {
             mVideoPublish = false;
             Toast.makeText(LivePublisherActivity.this, "推流地址不合法，目前支持rtmp推流!", Toast.LENGTH_SHORT).show();
             return false;
         }
-
         mCaptureView.setVisibility(View.VISIBLE);
         mLivePushConfig.setWatermark(mBitmap, 10, 10);
-
         int customModeType = 0;
-
         mLivePushConfig.setVideoFPS(25);
-
-        //【示例代码1】设置自定义视频采集逻辑 （自定义视频采集逻辑不要调用startPreview）
-//        customModeType |= TXLiveConstants.CUSTOM_MODE_VIDEO_CAPTURE;
-//        mLivePushConfig.setVideoResolution(TXLiveConstants.VIDEO_RESOLUTION_TYPE_640_360);
-//        mLivePushConfig.setAutoAdjustBitrate(false);
-//        mLivePushConfig.setVideoBitrate(1300);
-//        mLivePushConfig.setVideoFPS(25);
-//        mLivePushConfig.setVideoEncodeGop(3);
-//        new Thread() {  //视频采集线程
-//            @Override
-//            public void run() {
-//                while (true) {
-//                    try {
-//                        FileInputStream in = new FileInputStream("/sdcard/dump_1280_720.yuv");
-//                        int len = 1280 * 720 * 3 / 2;
-//                        byte buffer[] = new byte[len];
-//                        int count;
-//                        while ((count = in.read(buffer)) != -1) {
-//                            if (len == count) {
-//                                mLivePusher.sendCustomVideoData(buffer, TXLivePusher.YUV_420SP);
-//                            } else {
-//                                break;
-//                            }
-//                            sleep(50, 0);
-//                        }
-//                        in.close();
-//                    } catch (Exception e) {
-//                        // TODO Auto-generated catch block
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        }.start();
-
-        //【示例代码2】设置自定义音频采集逻辑（音频采样位宽必须是16）
-//        mLivePushConfig.setAudioSampleRate(44100);
-//        mLivePushConfig.setAudioChannels(1);
-//        customModeType |= TXLiveConstants.CUSTOM_MODE_AUDIO_CAPTURE;
-//        new Thread() {  //音频采集线程
-//            @Override
-//            public void run() {
-//                while (true) {
-//                    try {
-//                        FileInputStream in = new FileInputStream("/sdcard/dump.pcm");
-//                        int len = 2048;
-//                        byte buffer[] = new byte[len];
-//                        int count;
-//                        while ((count = in.read(buffer)) != -1) {
-//                            if (len == count) {
-//                                mLivePusher.sendCustomPCMData(buffer);
-//                            } else {
-//                                break;
-//                            }
-//                            sleep(10, 0);
-//                        }
-//                        in.close();
-//                    } catch (Exception e) {
-//                        // TODO Auto-generated catch block
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        }.start();
-
-        //【示例代码3】设置自定义视频预处理逻辑
-//        customModeType |= TXLiveConstants.CUSTOM_MODE_VIDEO_PREPROCESS;
-//        String path = this.getActivity().getApplicationInfo().dataDir + "/lib";
-//        mLivePushConfig.setCustomVideoPreProcessLibrary(path +"/libvideo.so", "tx_video_process");
-
-        //【示例代码4】设置自定义音频预处理逻辑
-//        customModeType |= TXLiveConstants.CUSTOM_MODE_AUDIO_PREPROCESS;
-//        String path = this.getActivity().getApplicationInfo().dataDir + "/lib";
-//        mLivePushConfig.setCustomAudioPreProcessLibrary(path +"/libvideo.so", "tx_audio_process");
-
-//        mLivePushConfig.setAutoAdjustBitrate(true);
-//        mLivePushConfig.setMaxVideoBitrate(1200);
-//        mLivePushConfig.setMinVideoBitrate(500);
-//        mLivePushConfig.setVideoBitrate(600);
-
         mLivePushConfig.setCustomModeType(customModeType);
-
         mLivePushConfig.setPauseImg(300, 10);
         Bitmap bitmap = decodeResource(getResources(), R.drawable.pause_publish);
         mLivePushConfig.setPauseImg(bitmap);
@@ -481,47 +395,34 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
         mLivePusher.setConfig(mLivePushConfig);
         mLivePusher.setPushListener(this);
         mLivePusher.startCameraPreview(mCaptureView);
-//        mLivePusher.startScreenCapture();
         mLivePusher.startPusher(rtmpUrl.trim());
-
-        //enableQRCodeBtn(false);
         clearLog();
         int[] ver = TXLivePusher.getSDKVersion();
         if (ver != null && ver.length >= 3) {
             mLogMsg.append(String.format("rtmp sdk version:%d.%d.%d ", ver[0], ver[1], ver[2]));
-            mLogViewEvent.setText(mLogMsg);
+           // mLogViewEvent.setText(mLogMsg);
+            Log.d("publishTAG","mLogMsg="+mLogMsg);
         }
-
         mBtnPlay.setBackgroundResource(R.drawable.play_pause);
-
         appendEventLog(0, "点击推流按钮！");
-
         return true;
     }
-
     private void stopPublishRtmp() {
-
-//        StopScreenCapture();
-
         mLivePusher.stopCameraPreview(true);
         mLivePusher.stopScreenCapture();
         mLivePusher.setPushListener(null);
         mLivePusher.stopPusher();
         mCaptureView.setVisibility(View.GONE);
-
         if (mBtnHWEncode != null) {
             mLivePushConfig.setHardwareAcceleration(true);
             mBtnHWEncode.setBackgroundResource(R.drawable.quick);
         }
 
-        //enableQRCodeBtn(true);
         mBtnPlay.setBackgroundResource(R.drawable.play_start);
-
         if (mLivePushConfig != null) {
             mLivePushConfig.setPauseImg(null);
         }
     }
-
 
     public void FixOrAdjustBitrate() {
         if (mRadioGroupBitrate == null || mLivePushConfig == null || mLivePusher == null) {
@@ -582,8 +483,9 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
         String msg = param.getString(TXLiveConstants.EVT_DESCRIPTION);
         appendEventLog(event, msg);
         if (mScrollView.getVisibility() == View.VISIBLE) {
-            mLogViewEvent.setText(mLogMsg);
-            scroll2Bottom(mScrollView, mLogViewEvent);
+           // mLogViewEvent.setText(mLogMsg);
+            Log.d("publishTAG","mLogMsg="+mLogMsg);
+            //scroll2Bottom(mScrollView, mLogViewEvent);
         }
 //        if (mLivePusher != null) {
 //            mLivePusher.onLogRecord("[event:" + event + "]" + msg + "\n");
@@ -705,6 +607,7 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
     public void setInfos(String message) {
         Log.d("TAG","push="+message);
         mLogViewEvent.setText(message);
+        scroll2Bottom(mScrollView, mLogViewEvent);
     }
 
     //观察屏幕旋转设置变化，类似于注册动态广播监听变化机制

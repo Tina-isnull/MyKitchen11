@@ -40,27 +40,6 @@ public class MyApp extends Application {
         ImageLoader.getInstance().init(
                 ImageLoaderConfiguration.createDefault(this));
         ShareSDK.initSDK(this);
-//获得关注的人的信息
-        if (bmobUser != null) {
-            BmobQuery<RelatedPartner> query = new BmobQuery<>();
-            query.include("relatedName");
-            query.addWhereEqualTo("userName", bmobUser.getObjectId());
-            query.findObjects(context, new FindListener<RelatedPartner>() {
-                @Override
-                public void onSuccess(List<RelatedPartner> list) {
-                    for (RelatedPartner data : list) {
-                        relatedName.add(data.getRelatedName().getObjectId());
-                        Log.i("TAG", data.getRelatedName().getObjectId());
-                    }
-                }
-
-                @Override
-                public void onError(int i, String s) {
-                    //TODO
-                    Log.i("TAG", "错误代码" + i + "," + s);
-                }
-            });
-        }
 
     }
 

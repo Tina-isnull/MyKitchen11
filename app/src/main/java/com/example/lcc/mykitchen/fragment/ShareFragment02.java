@@ -3,6 +3,7 @@ package com.example.lcc.mykitchen.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import com.example.lcc.mykitchen.MyApp;
 import com.example.lcc.mykitchen.R;
 import com.example.lcc.mykitchen.entity.Comments;
+import com.example.lcc.mykitchen.entity.RelatedPartner;
 import com.example.lcc.mykitchen.entity.ShareContent;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -36,7 +38,7 @@ public class ShareFragment02 extends Fragment {
     private View view;
     private ShareFragmentAdapter adapter;
     private UserInfo bmobUser;
-    private List<String> focusUsers = MyApp.relatedName;
+    private List<String> focusUsers;
     private DBUtils db;
     private PullToRefreshListView listView;
     private ShareFragment01.sendDynamic send;
@@ -53,6 +55,7 @@ public class ShareFragment02 extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        focusUsers = MyApp.relatedName;
         commentDate();
     }
     public void setOnSendVisiable(ShareFragment01.sendDynamic send){
@@ -69,6 +72,7 @@ public class ShareFragment02 extends Fragment {
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
             @Override
             public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                getRelatedPatener();
                commentDate();
             }
         });
@@ -131,9 +135,9 @@ public class ShareFragment02 extends Fragment {
                             }
                             shareContent.setCommentList(stringM);
                             mShareContent.add(shareContent);
-
+                            break;
                             }
-                        break;
+
                         }
                     }
                     adapter.addDate(mShareContent, true);
@@ -150,10 +154,7 @@ public class ShareFragment02 extends Fragment {
 
     }
     private void commentDate() {
-        if (focusUsers.size() == 0 || focusUsers == null) {
-            Toast.makeText(getActivity(), "您还没有关注人哦", Toast.LENGTH_SHORT).show();
-            return;
-        }
+
         BmobQuery<Comments> query=new BmobQuery<>();
         query.findObjects(getActivity(), new FindListener<Comments>() {
             @Override
@@ -171,4 +172,33 @@ public class ShareFragment02 extends Fragment {
         public void sendVisible(String id);
     }
 
+    public void getRelatedPatener() {
+        MyApp.relatedName.clear();
+        //获得关注的人的信息
+        if (bmobUser != null) {
+            BmobQuery<RelatedPartner> query = new BmobQuery<>();
+            query.include("relatedName");
+            query.addWhereEqualTo("userName", bmobUser.getObjectId());
+            query.findObjects(getActivity(), new FindListener<RelatedPartner>() {
+                @Override
+                public void onSuccess(List<RelatedPartner> list) {
+                    if(list==null&&list.size()==0){
+                        Toast.makeText(getActivity(), "您还没有关注人哦", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    for (RelatedPartner data : list) {
+                        MyApp.relatedName.add(data.getRelatedName().getObjectId());
+                        Log.i("TAG","relatedName=="+ data.getRelatedName().getUsername());
+                    }
+                    focusUsers = MyApp.relatedName;
+                }
+
+                @Override
+                public void onError(int i, String s) {
+                    //TODO
+                    Log.i("TAG", "错误代码" + i + "," + s);
+                }
+            });
+        }
+    }
 }

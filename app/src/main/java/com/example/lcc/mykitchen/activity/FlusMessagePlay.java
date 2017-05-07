@@ -11,14 +11,15 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 
 /**
- * Created by lcc on 2017/5/3.
+ * Created by lcc on 2017/5/6.
  */
-public class FlusMessage extends Thread {
+public class FlusMessagePlay extends Thread{
+
     public static boolean isStop=false;
     Context mContext;
     String msg = "", msg1 = "";
     private messageShow message;
-    public FlusMessage(Context context,messageShow message) {
+    public FlusMessagePlay(Context context,messageShow message) {
         mContext = context;
         this.message=message;
     }

@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.example.lcc.mykitchen.MyApp;
 import com.example.lcc.mykitchen.R;
 import com.example.lcc.mykitchen.activity.FlusMessage;
+import com.example.lcc.mykitchen.activity.FlusMessagePlay;
 import com.example.lcc.mykitchen.entity.ChatInfo;
 import com.example.lcc.mykitchen.entity.Comments;
 import com.example.lcc.mykitchen.entity.UserInfo;
@@ -40,7 +41,7 @@ import com.tencent.rtmp.ui.TXCloudVideoView;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.SaveListener;
 
-public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayListener, View.OnClickListener,FlusMessage.messageShow{
+public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayListener, View.OnClickListener, FlusMessagePlay.messageShow {
     private static final String TAG = LivePlayerActivity.class.getSimpleName();
     private TXLivePlayer mLivePlayer = null;
     private boolean mVideoPlay;
@@ -80,12 +81,14 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
     private EditText intput;
     private Button mSend;
     private LinearLayout ll_input;
-    private FlusMessage flusMessage;
+    private FlusMessagePlay flusMessage;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
         setActivityType(RTMPBaseActivity.ACTIVITY_TYPE_LIVE_PLAY);
+        initView();
         //得到播放的url
         playUrl = getIntent().getStringExtra("playUrl");
         mCurrentRenderMode = TXLiveConstants.RENDER_MODE_ADJUST_RESOLUTION;
@@ -98,15 +101,13 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
         mPlayerView = (TXCloudVideoView) findViewById(R.id.video_view);
         mLoadingView = (ImageView) findViewById(R.id.loadingImageView);
 
-        //mRtmpUrlView.setHint(" 请扫码输入播放地址...");
-        //mRtmpUrlView.setText("");
 
         mVideoPlay = false;
-//        mLogViewStatus.setVisibility(View.GONE);
-//        mLogViewStatus.setMovementMethod(new ScrollingMovementMethod());
-//        mLogViewEvent.setMovementMethod(new ScrollingMovementMethod());
+        mLogViewStatus.setVisibility(View.GONE);
+        mLogViewStatus.setMovementMethod(new ScrollingMovementMethod());
+        mLogViewEvent.setMovementMethod(new ScrollingMovementMethod());
         mScrollView = (ScrollView) findViewById(R.id.scrollview);
-        mScrollView.setVisibility(View.GONE);
+        mScrollView.setVisibility(View.VISIBLE);
 
         mBtnPlay = (Button) findViewById(R.id.btnPlay);
         mBtnPlay.setOnClickListener(new OnClickListener() {
@@ -136,8 +137,22 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
                 }
             }
         });
+        //进来就开始播放直播
+        if (startPlayRtmp()) {
+            if (mPlayType == TXLivePlayer.PLAY_TYPE_VOD_FLV || mPlayType == TXLivePlayer.PLAY_TYPE_VOD_HLS || mPlayType == TXLivePlayer.PLAY_TYPE_VOD_MP4) {
+                if (mVideoPause) {
+                    mLivePlayer.resume();
+                    mBtnPlay.setBackgroundResource(R.drawable.play_pause);
+                } else {
+                    mLivePlayer.pause();
+                    mBtnPlay.setBackgroundResource(R.drawable.play_start);
+                }
+                mVideoPause = !mVideoPause;
+            }
+        }
+        FlusMessagePlay.isStop=false;
         //刷新消息部分
-        flusMessage=new FlusMessage(this,this);
+        flusMessage = new FlusMessagePlay(this, this);
         flusMessage.start();
         //停止按钮
         mBtnStop = (Button) findViewById(R.id.btnStop);
@@ -155,11 +170,10 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
                 }
             }
         });
-        initView();
         //评论部分
-        intput= (EditText) findViewById(R.id.et_play_input);
-        mSend= (Button) findViewById(R.id.btn_send);
-        ll_input= (LinearLayout) findViewById(R.id.ll_input);
+        intput = (EditText) findViewById(R.id.et_play_input);
+        mSend = (Button) findViewById(R.id.btn_send);
+        ll_input = (LinearLayout) findViewById(R.id.ll_input);
         mSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -367,7 +381,7 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
         if (mPlayerView != null) {
             mPlayerView.onDestroy();
         }
-        FlusMessage.isStop=true;
+        FlusMessagePlay.isStop = true;
     }
 
     @Override
@@ -576,8 +590,8 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
         String msg = param.getString(TXLiveConstants.EVT_DESCRIPTION);
         appendEventLog(event, msg);
         if (mScrollView.getVisibility() == View.VISIBLE) {
-            mLogViewEvent.setText(mLogMsg);
-            scroll2Bottom(mScrollView, mLogViewEvent);
+            // mLogViewEvent.setText(mLogMsg);
+            //  scroll2Bottom(mScrollView, mLogViewEvent);
         }
 //        if(mLivePlayer != null){
 //            mLivePlayer.onLogRecord("[event:"+event+"]"+msg+"\n");
@@ -650,10 +664,12 @@ public class LivePlayerActivity extends RTMPBaseActivity implements ITXLivePlayL
             ((AnimationDrawable) mLoadingView.getDrawable()).stop();
         }
     }
-//显示聊天信息
+
+    //显示聊天信息
     @Override
     public void setInfos(String message) {
-        Log.d("TAG","paly="+message);
+        Log.d("TAG", "paly=" + message);
         mLogViewEvent.setText(message);
+        scroll2Bottom(mScrollView, mLogViewEvent);
     }
 }
