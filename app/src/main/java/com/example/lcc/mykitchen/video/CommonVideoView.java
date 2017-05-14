@@ -3,7 +3,9 @@ package com.example.lcc.mykitchen.video;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -15,6 +17,8 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lcc.mykitchen.R;
 
@@ -35,7 +40,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.example.lcc.mykitchen.constant.Constant;
+import com.example.lcc.mykitchen.entity.UserInfo;
 import com.example.lcc.mykitchen.utils.SpUtils;
+
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.listener.UpdateListener;
 
 
 /**
@@ -57,33 +66,34 @@ public class CommonVideoView extends FrameLayout implements MediaPlayer.OnPrepar
     private TextView videoCurTimeText;
     private TextView videoTotalTimeText;
     private SeekBar videoSeekBar;
-
     private ProgressBar progressBar;
-
     private int duration;
     private String formatTotalTime;
-
     private Timer timer = new Timer();
-
     private float touchLastX;
     //定义用seekBar当前的位置，触摸快进的时候显示时间
     private int position;
     private int touchStep = 1000;//快进的时间，1秒
     private int touchPosition = -1;
-
     private boolean videoControllerShow = true;//底部状态栏的显示状态
     private boolean animation = false;
     //获得视频的路径
     private String videoUrl;
+    //视频的价格
+    private String money;
     //偏好设置确定视频是否暂停
     private SpUtils spUtils;
-
     private TimerTask timerTask;
-    class MyTimerTask extends TimerTask{
+    private String chef_money;
+    private Boolean isMoney = false;
+
+    class MyTimerTask extends TimerTask {
         @Override
         public void run() {
             videoHandler.sendEmptyMessage(UPDATE_VIDEO_SEEKBAR);
-        }}
+        }
+    }
+
     private Handler videoHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -112,7 +122,11 @@ public class CommonVideoView extends FrameLayout implements MediaPlayer.OnPrepar
     }
 
     public void getURL(String url) {
-       this.videoUrl = url;
+        this.videoUrl = url;
+    }
+
+    public void getMoney(String money) {
+        this.money = money;
     }
 
     public void start(String url) {
@@ -141,7 +155,7 @@ public class CommonVideoView extends FrameLayout implements MediaPlayer.OnPrepar
     }
 
     private void initView() {
-        spUtils=new SpUtils(context, Constant.VIDEO_ISPAUSE);
+        spUtils = new SpUtils(context, Constant.VIDEO_ISPAUSE);
         View view = LayoutInflater.from(context).inflate(R.layout.common_video_view, null);
         viewBox = (FrameLayout) view.findViewById(R.id.viewBox);
         videoView = (MyVideoView) view.findViewById(R.id.videoView);
@@ -217,7 +231,7 @@ public class CommonVideoView extends FrameLayout implements MediaPlayer.OnPrepar
         formatTotalTime = String.format("%02d:%02d", time[0], time[1]);
         videoSeekBar.setMax(duration);
         progressBar.setVisibility(View.GONE);
-        timerTask =new MyTimerTask();
+        timerTask = new MyTimerTask();
         mp.start();
         videoPauseBtn.setEnabled(true);
         videoSeekBar.setEnabled(true);
@@ -365,9 +379,9 @@ public class CommonVideoView extends FrameLayout implements MediaPlayer.OnPrepar
         switch (v.getId()) {
             case R.id.videoPlayImg:
                 videoThumbnail.setVisibility(View.INVISIBLE);
-                if(spUtils.isPause()){
-                    videoView.start();
-                }else{
+                if (spUtils.isPause()) {
+                        videoView.start();
+                } else {
                     start(videoUrl);
                     spUtils.setPause(true);
                 }
@@ -380,7 +394,7 @@ public class CommonVideoView extends FrameLayout implements MediaPlayer.OnPrepar
                     videoPauseImg.setImageResource(R.drawable.icon_video_play);
                     videoPlayImg.setVisibility(View.VISIBLE);
                 } else {
-                    videoView.start();
+                        videoView.start();
                     videoPauseImg.setImageResource(R.drawable.icon_video_pause);
                     videoPlayImg.setVisibility(View.INVISIBLE);
                 }
@@ -453,5 +467,44 @@ public class CommonVideoView extends FrameLayout implements MediaPlayer.OnPrepar
         videoView.start();
         videoPlayImg.setVisibility(View.INVISIBLE);
         videoPauseImg.setImageResource(R.drawable.icon_video_pause);
+    }
+
+    protected void dialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage("确认要支付吗？");
+        builder.setTitle("提示");
+        builder.setNegativeButton("支付", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                UserInfo userInfo = new UserInfo();
+                chef_money = BmobUser.getCurrentUser(context, UserInfo.class).getMoney();
+                chef_money = (Integer.parseInt(money) - (Integer.parseInt(money))) + "";
+                userInfo.setMoney(money + "");
+                userInfo.setObjectId(BmobUser.getCurrentUser(context, UserInfo.class).getObjectId());
+                userInfo.update(context, new UpdateListener() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(context, "购买成功", Toast.LENGTH_SHORT).show();
+                        BmobUser.getCurrentUser(context, UserInfo.class).setMoney(chef_money);
+                        isMoney=true;
+                        videoView.start();
+                    }
+
+                    @Override
+                    public void onFailure(int i, String s) {
+
+                    }
+                });
+
+
+            }
+        });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
     }
 }

@@ -22,9 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.lcc.mykitchen.adapter.ShareFragmentAdapter;
+
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.FindListener;
+
 import com.example.lcc.mykitchen.entity.CollectKiter;
 import com.example.lcc.mykitchen.entity.ShareFriends;
 import com.example.lcc.mykitchen.entity.UserInfo;
@@ -44,6 +46,7 @@ public class ShareFragment02 extends Fragment {
     private ShareFragment01.sendDynamic send;
     private List<ShareContent> mShareContent;
     private List<Comments> stringM;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,32 +59,35 @@ public class ShareFragment02 extends Fragment {
     public void onResume() {
         super.onResume();
         focusUsers = MyApp.relatedName;
+        getRelatedPatener();
+
         commentDate();
     }
-    public void setOnSendVisiable(ShareFragment01.sendDynamic send){
-        this.send=send;
-    }
-    private void initialUI() {
-        db=new DBUtils(getActivity(),2);
-        mShareContent=new ArrayList<>();
 
+    public void setOnSendVisiable(ShareFragment01.sendDynamic send) {
+        this.send = send;
+    }
+
+    private void initialUI() {
+        db = new DBUtils(getActivity(), 2);
+        mShareContent = new ArrayList<>();
         bmobUser = BmobUser.getCurrentUser(getActivity(), UserInfo.class);
         listView = (PullToRefreshListView) view.findViewById(R.id.listView_shareF_id);
-        adapter = new ShareFragmentAdapter(getActivity(),send);
+        adapter = new ShareFragmentAdapter(getActivity(), send);
         listView.setAdapter(adapter);
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
             @Override
             public void onRefresh(PullToRefreshBase<ListView> refreshView) {
                 getRelatedPatener();
-               commentDate();
+                commentDate();
             }
         });
     }
 
     private void queryRelatedPartner() {
-        List<CollectKiter> kiter= db.queryKiter();
-        if(kiter!=null&&kiter.size()>0){
-            for (CollectKiter data:kiter){
+        List<CollectKiter> kiter = db.queryKiter();
+        if (kiter != null && kiter.size() > 0) {
+            for (CollectKiter data : kiter) {
                 focusUsers.add(data.getId());
             }
             return;
@@ -121,21 +127,21 @@ public class ShareFragment02 extends Fragment {
                 listView.onRefreshComplete();
                 mShareContent.clear();
 
-                if(list!=null&&list.size()>0){
-                for (ShareFriends data : list) {
-                    for (String focus : focusUsers) {
-                        if (data.getUserInfo().getObjectId().equals(focus)||data.getUserInfo().getObjectId().equals(bmobUser.getObjectId())) {
-                            ShareContent shareContent=new ShareContent();
-                            stringM=new ArrayList<>();
-                            shareContent.setShareFriends(data);
-                            for (Comments comment:Clist){
-                                if(comment.getShareId().equals(data.getObjectId())){
-                                    stringM.add(comment);
+                if (list != null && list.size() > 0) {
+                    for (ShareFriends data : list) {
+                        for (String focus : focusUsers) {
+                            if (data.getUserInfo().getObjectId().equals(focus) || data.getUserInfo().getObjectId().equals(bmobUser.getObjectId())) {
+                                ShareContent shareContent = new ShareContent();
+                                stringM = new ArrayList<>();
+                                shareContent.setShareFriends(data);
+                                for (Comments comment : Clist) {
+                                    if (comment.getShareId().equals(data.getObjectId())) {
+                                        stringM.add(comment);
+                                    }
                                 }
-                            }
-                            shareContent.setCommentList(stringM);
-                            mShareContent.add(shareContent);
-                            break;
+                                shareContent.setCommentList(stringM);
+                                mShareContent.add(shareContent);
+                                break;
                             }
 
                         }
@@ -147,15 +153,16 @@ public class ShareFragment02 extends Fragment {
 
             @Override
             public void onError(int i, String s) {
-
+                Toast.makeText(getActivity(), s+i, Toast.LENGTH_SHORT).show();
             }
         });
 
 
     }
+
     private void commentDate() {
 
-        BmobQuery<Comments> query=new BmobQuery<>();
+        BmobQuery<Comments> query = new BmobQuery<>();
         query.findObjects(getActivity(), new FindListener<Comments>() {
             @Override
             public void onSuccess(List<Comments> list) {
@@ -164,10 +171,11 @@ public class ShareFragment02 extends Fragment {
 
             @Override
             public void onError(int i, String s) {
-
+                Toast.makeText(getActivity(), s+i, Toast.LENGTH_SHORT).show();
             }
         });
     }
+
     public interface sendDynamic {
         public void sendVisible(String id);
     }
@@ -182,21 +190,23 @@ public class ShareFragment02 extends Fragment {
             query.findObjects(getActivity(), new FindListener<RelatedPartner>() {
                 @Override
                 public void onSuccess(List<RelatedPartner> list) {
-                    if(list==null&&list.size()==0){
+                    if (list == null && list.size() == 0) {
                         Toast.makeText(getActivity(), "您还没有关注人哦", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     for (RelatedPartner data : list) {
                         MyApp.relatedName.add(data.getRelatedName().getObjectId());
-                        Log.i("TAG","relatedName=="+ data.getRelatedName().getUsername());
+                        Log.i("TAG", "relatedName==" + data.getRelatedName().getUsername());
                     }
+                    MyApp.relatedName.add(bmobUser.getObjectId());
                     focusUsers = MyApp.relatedName;
                 }
 
                 @Override
                 public void onError(int i, String s) {
-                    //TODO
                     Log.i("TAG", "错误代码" + i + "," + s);
+                    MyApp.relatedName.add(bmobUser.getObjectId());
+                    focusUsers = MyApp.relatedName;
                 }
             });
         }

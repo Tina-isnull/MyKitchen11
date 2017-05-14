@@ -24,6 +24,7 @@ public class MethFragmentAdapter extends MyBaseAdapter<FoodVideo> {
             convertView = inflater.inflate(R.layout.inflater_methord_listview, null);
             vHolder.kiterImg = (ImageView) convertView.findViewById(R.id.imgListHeadId);
             vHolder.KiterName = (TextView) convertView.findViewById(R.id.tvListNameId);
+            vHolder.videoMoney = (TextView) convertView.findViewById(R.id.tv_money);
             vHolder.foodVideo = (CommonVideoView) convertView.findViewById(R.id.videoListId);
             vHolder.foodVideoName = (TextView) convertView.findViewById(R.id.tvListVideoNameId);
             convertView.setTag(vHolder);
@@ -34,8 +35,10 @@ public class MethFragmentAdapter extends MyBaseAdapter<FoodVideo> {
         FoodVideo foodVideo = (FoodVideo) getItem(position);
         HttpRequestManager.displayImage(foodVideo.getUserInfo().getHeaderUrl(), vHolder.kiterImg);
         vHolder.KiterName.setText(foodVideo.getUserInfo().getUsername());
+        vHolder.videoMoney.setText(foodVideo.getVideoMoney()+"元");
         vHolder.foodVideo.showTthumbnail(foodVideo.getVideoUrl());
         vHolder.foodVideo.getURL(foodVideo.getVideoUrl());
+        vHolder.foodVideo.getMoney(foodVideo.getVideoMoney());
         vHolder.foodVideoName.setText(foodVideo.getVideoName());
 
         return convertView;
@@ -46,6 +49,7 @@ public class MethFragmentAdapter extends MyBaseAdapter<FoodVideo> {
         TextView KiterName;//厨师的名字
         CommonVideoView foodVideo;//美食视频
         TextView foodVideoName;//视频的名字
+        TextView videoMoney;//视频的名字
 
     }
 }

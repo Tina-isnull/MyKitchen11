@@ -4,10 +4,20 @@
     android:layout_height="match_parent"
     tools:context=".fragment.VideoFragment2">
 
-    <ListView
+    <ImageView
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:id="@+id/listView_video_id"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="240dp"
+        android:src="@drawable/video_food2"
          />
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/video_stop"
+        />
 
 </FrameLayout>

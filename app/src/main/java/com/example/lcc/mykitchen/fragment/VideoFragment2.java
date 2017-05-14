@@ -27,8 +27,8 @@ import java.util.List;
  */
 public class VideoFragment2 extends Fragment {
 
-    private ListView listView;
-    private MyAdapter adapter;
+    private ImageView listView;
+    //private MyAdapter adapter;
     private List<VideoWeb> list;
 
     @Override
@@ -37,22 +37,21 @@ public class VideoFragment2 extends Fragment {
         View view = inflater.inflate(R.layout.fragment_video_fragment2, container, false);
         list = new ArrayList<>();
 
-        listView = (ListView) view.findViewById(R.id.listView_video_id);
-        adapter = new MyAdapter();
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView = (ImageView) view.findViewById(R.id.listView_video_id);
+        listView.setColorFilter(88000000);
+      //  adapter = new MyAdapter();
+        listView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onClick(View v) {
                 Intent intent=new Intent(getActivity(), LivePlayerActivity.class);
-                VideoWeb videoWeb= (VideoWeb) adapter.getItem(position);
-                String url=videoWeb.getUrl();
+                String url="rtmp://6505.liveplay.myqcloud.com/live/6505_5115940c0e";
                 intent.putExtra("playUrl",url);
                 startActivity(intent);
             }
         });
         return view;
     }
-
+/*
     class MyAdapter extends BaseAdapter {
 
         @Override
@@ -97,15 +96,15 @@ public class VideoFragment2 extends Fragment {
             private TextView url;
 
         }
-    }
+    }*/
 
     @Override
     public void onResume() {
         super.onResume();
-        VideoWeb videoWeb=new VideoWeb();
+       /* VideoWeb videoWeb=new VideoWeb();
         videoWeb.setImg(R.drawable.video_food1);
         videoWeb.setUrl("rtmp://6505.liveplay.myqcloud.com/live/6505_5115940c0e");
         list.add(videoWeb);
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();*/
     }
 }

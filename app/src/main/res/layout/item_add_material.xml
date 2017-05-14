@@ -20,7 +20,7 @@
         android:layout_weight="1"
         android:background="@null"
         android:paddingLeft="10dp"
-        android:hint="如:排骨"/>
+        android:hint="如:一斤"/>
     <ImageView
         android:id="@+id/img_add_material_delete"
         android:layout_width="20dp"

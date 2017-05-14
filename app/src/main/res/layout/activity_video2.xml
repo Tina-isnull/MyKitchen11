@@ -16,6 +16,12 @@
             android:layout_height="wrap_content"
             android:hint="请输入视频的名称"
             android:background="@null"/>
+        <EditText
+            android:id="@+id/et_video_money"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入观看您视频所需要的价格"
+            android:background="@null"/>
 
         <SurfaceView
             android:id="@+id/surfaceview"

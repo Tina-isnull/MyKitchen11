@@ -298,8 +298,10 @@ public class ShareFragmentAdapter extends MyBaseAdapter<ShareContent> {
 
             }
         });
+if(shareItem.getCommentList()!=null&&shareItem.getCommentList().size()!=0){
+    cAdapter.addDate(shareItem.getCommentList(), true);
+}
 
-        cAdapter.addDate(shareItem.getCommentList(), true);
         cAdapter.notifyDataSetChanged();
         viewHolder.tvComment.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -120,7 +120,32 @@ public class ShareFragment01 extends Fragment {
             }
         });
     }
+    private void initialDate2() {
 
+        final BmobQuery<ShareFriends> query = new BmobQuery<>();
+        query.include("userInfo");
+        query.findObjects(getActivity(), new FindListener<ShareFriends>() {
+            @Override
+            public void onSuccess(List<ShareFriends> list) {
+                listView.onRefreshComplete();
+                mShareContent.clear();
+                if (list != null && list.size() > 0) {
+                    for (ShareFriends lists : list) {
+                        ShareContent shareContent = new ShareContent();
+                        shareContent.setShareFriends(lists);
+                        mShareContent.add(shareContent);
+                    }
+                    adapter.addDate(mShareContent, true);
+
+                }
+            }
+
+            @Override
+            public void onError(int i, String s) {
+
+            }
+        });
+    }
     private void CommentDate() {
         BmobQuery<Comments> query = new BmobQuery<>();
         query.findObjects(getActivity(), new FindListener<Comments>() {
@@ -131,7 +156,9 @@ public class ShareFragment01 extends Fragment {
 
             @Override
             public void onError(int i, String s) {
-
+                if(i==101){
+                    initialDate2();
+                }
             }
         });
     }

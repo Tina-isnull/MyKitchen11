@@ -60,6 +60,7 @@ public class PublishActivity extends Activity {
     private EditText editText;
     private ProgressDialog progressDialog;
     int i=0;
+    private String money;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_publish);
@@ -150,23 +151,25 @@ public class PublishActivity extends Activity {
             public void onClick(View v) {
                 //获得是10个厨币
                 UserInfo userInfo=new UserInfo();
-                String money=BmobUser.getCurrentUser(PublishActivity.this, UserInfo.class).getMoney();
+                money=BmobUser.getCurrentUser(PublishActivity.this, UserInfo.class).getMoney();
                 if(TextUtils.isEmpty(money)){
                     money=10+"";
                 }else{
 
                     money=(Integer.parseInt(money)+10)+"";
                 }
+                userInfo.setObjectId(BmobUser.getCurrentUser(PublishActivity.this,UserInfo.class).getObjectId());
                 userInfo.setMoney(money+"");
                 userInfo.update(PublishActivity.this, new UpdateListener() {
                     @Override
                     public void onSuccess() {
                         Toast.makeText(PublishActivity.this, "恭喜您获得了10个厨币哦", Toast.LENGTH_SHORT).show();
+                        BmobUser.getCurrentUser(PublishActivity.this,UserInfo.class).setMoney(money);
                     }
 
                     @Override
                     public void onFailure(int i, String s) {
-
+                        Toast.makeText(PublishActivity.this, i+s, Toast.LENGTH_SHORT).show();
                     }
                 });
 

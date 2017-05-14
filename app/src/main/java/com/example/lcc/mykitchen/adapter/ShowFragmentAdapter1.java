@@ -1,6 +1,7 @@
 package com.example.lcc.mykitchen.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -44,7 +45,7 @@ public class ShowFragmentAdapter1 extends MyBaseAdapter<FoodDetails> {
             HttpRequestManager.displayImage(food.getDetial().getBurden(),vHolder.foodHeader);
         }
 
-        if(!food.getKitterImgUrl().equals("")){
+        if(!TextUtils.isEmpty(food.getKitterImgUrl())){
             HttpRequestManager.displayImage(food.getKitterImgUrl(),vHolder.kiterHeader);
         }else{
             vHolder.kiterHeader.setImageResource(R.drawable.logo);

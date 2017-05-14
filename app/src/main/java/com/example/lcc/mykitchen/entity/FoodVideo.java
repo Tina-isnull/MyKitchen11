@@ -9,6 +9,15 @@ public class FoodVideo extends BmobObject {
 	private String videoUrl;
 	//视频的名称
 	private String videoName;
+	private String videoMoney;
+
+	public String getVideoMoney() {
+		return videoMoney;
+	}
+
+	public void setVideoMoney(String videoMoney) {
+		this.videoMoney = videoMoney;
+	}
 
 	public UserInfo getUserInfo() {
 		return userInfo;

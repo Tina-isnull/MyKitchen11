@@ -47,6 +47,9 @@ public class VideoActivity2 extends AppCompatActivity implements SurfaceHolder.C
     private SurfaceHolder surfaceHolder;
     private String localPath;
     private EditText videoName;
+    private EditText videoMoney;
+    private String vName;
+    private String vMoney;
     private int UPLOAD_TIME=1;
     //发消息，让录制一分钟后,提示上传
     private Handler handler = new Handler() {
@@ -73,6 +76,7 @@ public class VideoActivity2 extends AppCompatActivity implements SurfaceHolder.C
 
     private void init() {
         videoName = (EditText) this.findViewById(R.id.et_video_name);
+        videoMoney = (EditText) this.findViewById(R.id.et_video_money);
         start = (Button) this.findViewById(R.id.start);
         stop = (Button) this.findViewById(R.id.stop);
         start.setOnClickListener(new TestVideoListener());
@@ -203,10 +207,15 @@ public void stopVideo(){
                             msc.disconnect();
                             progressDialog.dismiss();
                             setResult(RESULT_OK, getIntent().putExtra("uri", uri));
-
+                            vName = videoName.getText().toString();
+                            vMoney = videoMoney.getText().toString();
                             //将视频上传到bmob文件进行存储
+                            if (TextUtils.isEmpty(vName)||TextUtils.isEmpty(vMoney)){
+                                Toast.makeText(VideoActivity2.this, "视频名称和价格不可为空", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
                             uploadVideoBmob();
-                            finish();
+
                         }
 
                         @Override
@@ -227,25 +236,22 @@ public void stopVideo(){
     }
 
     private void uploadVideoBmob() {
-        final String vName = videoName.getText().toString();
         final BmobFile bmobFile = new BmobFile(new File(localPath));
         bmobFile.uploadblock(this, new UploadFileListener() {
             @Override
             public void onSuccess() {
                 //上传后的图片在服务器上的位置（网址）
                 String videoUrl = bmobFile.getFileUrl(VideoActivity2.this);
-                if (TextUtils.isEmpty(vName)) {
-                    Toast.makeText(VideoActivity2.this, "视频名称不可为空", Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 FoodVideo foodVideo = new FoodVideo();
                 foodVideo.setUserInfo(BmobUser.getCurrentUser(VideoActivity2.this, UserInfo.class));
                 foodVideo.setVideoName(vName);
                 foodVideo.setVideoUrl(videoUrl);
+                foodVideo.setVideoMoney(videoMoney.getText().toString());
                 foodVideo.save(VideoActivity2.this, new SaveListener() {
                     @Override
                     public void onSuccess() {
                         Toast.makeText(VideoActivity2.this, "上传成功", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
 
                     @Override

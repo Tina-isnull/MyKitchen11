@@ -60,6 +60,7 @@ public class RegisterActivity extends MyBaseActivity {
         //设置actionBar
         actionBar = (LinearLayout) findViewById(R.id.include_register_id);
         initActionbar(R.drawable.go_back_normal, "注册", -1);
+        btnCode= (Button) findViewById(R.id.btn_getCodeId);
     }
 
     @OnClick(R.id.btn_getCodeId)
@@ -75,7 +76,7 @@ public class RegisterActivity extends MyBaseActivity {
         password = mPassword.getText().toString();
         sure_password_m = sure_password.getText().toString();
         code = mCode.getText().toString();
-        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(password)||TextUtils.isEmpty(code)||TextUtils.isEmpty(sure_password_m)||TextUtils.isEmpty(phone)) {
+        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(password)||TextUtils.isEmpty(sure_password_m)) {
             Toast.makeText(this, "请您填写完整", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -116,6 +117,7 @@ public class RegisterActivity extends MyBaseActivity {
                     if (ex == null) {// 验证码发送成功
                         toast("验证码发送成功");// 用于查询本次短信发送详情
                     } else {//如果验证码发送错误，可停止计时
+                        toast(ex.toString());
                         timer.cancel();
                     }
                 }
