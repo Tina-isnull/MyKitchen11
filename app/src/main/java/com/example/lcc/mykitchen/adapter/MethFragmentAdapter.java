@@ -38,7 +38,7 @@ public class MethFragmentAdapter extends MyBaseAdapter<FoodVideo> {
         vHolder.videoMoney.setText(foodVideo.getVideoMoney()+"元");
         vHolder.foodVideo.showTthumbnail(foodVideo.getVideoUrl());
         vHolder.foodVideo.getURL(foodVideo.getVideoUrl());
-        vHolder.foodVideo.getMoney(foodVideo.getVideoMoney());
+        //vHolder.foodVideo.getMoney(foodVideo.getVideoMoney());
         vHolder.foodVideoName.setText(foodVideo.getVideoName());
 
         return convertView;
