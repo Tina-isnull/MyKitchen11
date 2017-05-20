@@ -44,7 +44,7 @@ public class VideoFragment2 extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getActivity(), LivePlayerActivity.class);
-                String url="rtmp://6505.liveplay.myqcloud.com/live/6505_5115940c0e";
+                String url="rtmp://6505.liveplay.myqcloud.com/live/6505_feb7715e20";
                 intent.putExtra("playUrl",url);
                 startActivity(intent);
             }

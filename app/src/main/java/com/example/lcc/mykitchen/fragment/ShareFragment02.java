@@ -60,7 +60,6 @@ public class ShareFragment02 extends Fragment {
         super.onResume();
         focusUsers = MyApp.relatedName;
         getRelatedPatener();
-
         commentDate();
     }
 

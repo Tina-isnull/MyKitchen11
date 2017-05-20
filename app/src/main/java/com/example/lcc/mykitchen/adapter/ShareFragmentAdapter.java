@@ -120,20 +120,23 @@ public class ShareFragmentAdapter extends MyBaseAdapter<ShareContent> {
         viewHolder.name.setText(shareItem.getShareFriends().getUserInfo().getUsername());
         ImageLoader.getInstance().displayImage(shareItem.getShareFriends().getUserInfo().getHeaderUrl(), viewHolder.headerImg);
         //如果用户没有登录，则不会有用户信息，则全部显示信息
+        viewHolder.focuse.setVisibility(View.VISIBLE);
         if (bmobUser != null) {
-            if (shareItem.getShareFriends().getUserInfo().getObjectId().equals(bmobUser.getObjectId())) {
-                viewHolder.focuse.setVisibility(View.INVISIBLE);
-            }else{
-                viewHolder.focuse.setVisibility(View.VISIBLE);
-            }
             //关注的人直接显示已经关注
             List<String> focus = MyApp.relatedName;
             if (focus.size() > 0 && focus != null) {
                 for (String list : focus) {
-                    if (list.equals(shareItem.getShareFriends().getUserInfo().getObjectId()))
+                    if(list.equals(bmobUser.getObjectId())){
+                        viewHolder.focuse.setVisibility(View.INVISIBLE);
+                        break;
+
+                    }else if (list.equals(shareItem.getShareFriends().getUserInfo().getObjectId())){
                         viewHolder.focuse.setVisibility(View.VISIBLE);
                         viewHolder.focuse.setImageResource(R.drawable.rec_followed);
                         viewHolder.focuse.setEnabled(false);
+                        break;
+                    }
+
                 }
             }
         }

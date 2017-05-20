@@ -113,7 +113,7 @@ private UserInfo bmobUser;
                 Log.i("TAG", id + "");
                 RadioButton radioButton = (RadioButton) contentView.findViewById(id);
                 food = radioButton.getText().toString();
-                // refresh(food);
+                 refresh(food);
             }
         });
         lists.add("家常菜");
@@ -391,13 +391,13 @@ private UserInfo bmobUser;
                    return;
                }*/
         List<FoodDetails> lists = new ArrayList<FoodDetails>();
-               /* for (FoodFromWeb.Detials foodData : bean) {
+              /*  for (FoodFromWeb.Detials foodData : bean) {
                     FoodDetails food = new FoodDetails("","商家", foodData);
                    lists.add(food);
                 }*/
         getFromBmobFood(lists);
-    /*}
-        });*/
+  // }
+   //     });
     }
 
     public void getFromBmobFood(final List<FoodDetails> detialsList) {
@@ -416,7 +416,7 @@ private UserInfo bmobUser;
                         detials.setSteps(list.get(i).getMenuStepList());
                         detials.setImtro(list.get(i).getMenuIntro());
                         detials.setIngredients(list.get(i).getMenuMaterial());
-                        FoodDetails food = new FoodDetails(list.get(i).getUser().getHeaderUrl(), list.get(i).getUser().getUsername(), detials);
+                        FoodDetails food = new FoodDetails(list.get(i).getObjectId(),list.get(i).getUser().getHeaderUrl(), list.get(i).getUser().getUsername(), detials);
                         detialsList.add(food);
                     }
                     adapter.addDate(detialsList, true);

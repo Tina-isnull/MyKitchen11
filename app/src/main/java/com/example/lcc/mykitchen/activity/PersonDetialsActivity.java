@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.FindListener;
 
 public class PersonDetialsActivity extends MyBaseActivity {
@@ -60,13 +61,22 @@ public class PersonDetialsActivity extends MyBaseActivity {
             intro.setText(userInfo.getIntro());
         }
         works.setAdapter(adapter);
+
         works.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FoodDetails steps = (FoodDetails) adapter.getItem(position);
-                Intent intent = new Intent(PersonDetialsActivity.this, FoodDetailsActivity.class);
-                intent.putExtra("step", steps);
-                startActivity(intent);
+                if(userInfo.getObjectId().equals(BmobUser.getCurrentUser(PersonDetialsActivity.this,UserInfo.class).getObjectId())){
+                    Intent intent = new Intent(PersonDetialsActivity.this, EditMenuActivity.class);
+                    intent.putExtra("details", steps);
+                    startActivity(intent);
+                }else{
+                    Intent intent = new Intent(PersonDetialsActivity.this, FoodDetailsActivity.class);
+                    intent.putExtra("step", steps);
+                    startActivity(intent);
+                }
+
+
             }
         });
     }
@@ -92,7 +102,7 @@ public class PersonDetialsActivity extends MyBaseActivity {
                         detials.setSteps(list.get(i).getMenuStepList());
                         detials.setImtro(list.get(i).getMenuIntro());
                         detials.setIngredients(list.get(i).getMenuMaterial());
-                        FoodDetails food = new FoodDetails(list.get(i).getUser().getHeaderUrl(), list.get(i).getUser().getUsername(), detials);
+                        FoodDetails food = new FoodDetails(list.get(i).getObjectId(),list.get(i).getUser().getHeaderUrl(), list.get(i).getUser().getUsername(), detials);
                         detialsList.add(food);
                     }
                     adapter.notifyDataSetChanged();

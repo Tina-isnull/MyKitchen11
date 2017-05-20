@@ -376,7 +376,7 @@ public class LivePublisherActivity extends RTMPBaseActivity implements View.OnCl
     }
 
     private boolean startPublishRtmp() {
-        String rtmpUrl = "rtmp://6505.livepush.myqcloud.com/live/6505_5115940c0e?bizid=6505&txSecret=c2afa93ff3049e3d94f8f9ea197643ed&txTime=590F447F";
+        String rtmpUrl = "rtmp://6505.livepush.myqcloud.com/live/6505_feb7715e20?bizid=6505&txSecret=4487d89d7843a323c6d7ac5b2d6a20bc&txTime=591F167F";
         if (TextUtils.isEmpty(rtmpUrl) || (!rtmpUrl.trim().toLowerCase().startsWith("rtmp://"))) {
             mVideoPublish = false;
             Toast.makeText(LivePublisherActivity.this, "推流地址不合法，目前支持rtmp推流!", Toast.LENGTH_SHORT).show();

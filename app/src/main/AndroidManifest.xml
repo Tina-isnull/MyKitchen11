@@ -59,6 +59,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- 获取wifi网络状态的信息 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- qq登录 -->
+    <uses-permission android:name="permission.WRITE_APN_SETTINGS" />
 
     <application
         android:name=".MyApp"
@@ -176,24 +178,26 @@
         <activity android:name=".zhibo.LivePlayerActivity" />
         <activity android:name=".activity.PersonDetialsActivity" />
         <activity android:name=".activity.FootprintActivity" />
-        <activity android:name=".activity.MoneyActivity"></activity>
-<!--qq第三方登录 -->
-        <activity android:name="com.tencent.connect.common.AssistActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+        <activity android:name=".activity.MoneyActivity" />
+        <!-- qq第三方登录 -->
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name="com.tencent.tauth.AuthActivity"
-            android:noHistory="true"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="tencent你的AppId" />
+
+                <data android:scheme="tencent101402508" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".activity.EditMenuActivity"></activity>
     </application>
 
 </manifest>

@@ -100,7 +100,7 @@ public class LoginActivity extends MyBaseActivity {
 
     private void qqAuthorize(){
         if(mTencent==null){
-            mTencent = Tencent.createInstance("222222", getApplicationContext());
+            mTencent = Tencent.createInstance("101402508", getApplicationContext());
         }
         mTencent.logout(this);
         mTencent.login(this, "all", new IUiListener() {
