@@ -24,6 +24,7 @@ import com.example.lcc.mykitchen.notebook.NoteMainActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import cn.bmob.v3.BmobUser;
+
 import com.example.lcc.mykitchen.constant.Constant;
 import com.example.lcc.mykitchen.entity.UserInfo;
 import com.example.lcc.mykitchen.utils.SpUtils;
@@ -36,6 +37,7 @@ public class MyFragment extends BaseFragment implements OnClickListener {
     private ImageView header;
     private SpUtils spUtils;
     private TextView name;
+    private UserInfo info;
 
     public MyFragment() {
     }
@@ -44,6 +46,7 @@ public class MyFragment extends BaseFragment implements OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         contentView = inflater.inflate(R.layout.fragment_my, container, false);
         initUI();
+        info = BmobUser.getCurrentUser(getActivity(), UserInfo.class);
         return contentView;
     }
 
@@ -75,7 +78,7 @@ public class MyFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        bmobUser = BmobUser.getCurrentUser(getActivity(),UserInfo.class);
+        bmobUser = BmobUser.getCurrentUser(getActivity(), UserInfo.class);
         //更新头像
         if (bmobUser == null) {
             header.setImageResource(R.drawable.header0);
@@ -113,8 +116,7 @@ public class MyFragment extends BaseFragment implements OnClickListener {
                 break;
             case R.id.img_myf_headerId:
 
-                boolean loginState = spUtils.getLoginState();
-                if (loginState) {
+                if (info!=null) {
                     Intent intent = new Intent(getActivity(), PersonDataActivity.class);
                     startActivity(intent);
                 } else {

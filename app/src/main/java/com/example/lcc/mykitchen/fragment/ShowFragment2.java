@@ -75,7 +75,7 @@ public class ShowFragment2 extends BaseFragment {
     Handler mHandler = new Handler();
     List<UserInfo> kitterLists;
     private ShowRecyclerAdapter mAdapter;
-private UserInfo bmobUser;
+    private UserInfo bmobUser;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         contentView = inflater.inflate(R.layout.fragment_show2, container, false);

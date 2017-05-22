@@ -103,36 +103,9 @@ public class LoginActivity extends MyBaseActivity {
             mTencent = Tencent.createInstance("101402508", getApplicationContext());
         }
         mTencent.logout(this);
-        mTencent.login(this, "all", new IUiListener() {
-            @Override
-            public void onComplete(Object arg0) {
-                // TODO Auto-generated method stub
-                if(arg0!=null){
-                    JSONObject jsonObject = (JSONObject) arg0;
-                    try {
-                        String token = jsonObject.getString(com.tencent.connect.common.Constants.PARAM_ACCESS_TOKEN);
-                        String expires = jsonObject.getString(com.tencent.connect.common.Constants.PARAM_EXPIRES_IN);
-                        String openId = jsonObject.getString(com.tencent.connect.common.Constants.PARAM_OPEN_ID);
-                        BmobUser.BmobThirdUserAuth authInfo = new BmobUser.BmobThirdUserAuth(BmobUser.BmobThirdUserAuth.SNS_TYPE_QQ,token, expires,openId);
-                        loginWithAuth(authInfo);
-                    } catch (JSONException e) {
-                    }
-                }
-            }
-
-            @Override
-            public void onError(UiError arg0) {
-                // TODO Auto-generated method stub
-                toast("QQ授权出错："+arg0.errorCode+"--"+arg0.errorDetail);
-            }
-
-            @Override
-            public void onCancel() {
-                // TODO Auto-generated method stub
-                toast("取消qq授权");
-            }
-        });
+        mTencent.login(this, "all", new BaseUiListener());
     }
+
     public void loginWithAuth(final BmobUser.BmobThirdUserAuth authInfo){
         BmobUser.loginWithAuthData(LoginActivity.this, authInfo, new OtherLoginListener() {
 
@@ -181,6 +154,51 @@ public class LoginActivity extends MyBaseActivity {
                 }
             });
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //由于在一些低端机器上，因为内存原因，无法返回到回调onComplete里面，是以onActivityResult的方式返回
+        if(requestCode==11101&&resultCode==RESULT_OK){
+            //处理返回的数据
+            if(data==null){
+                Toast.makeText(getApplicationContext(),"返回数据为空",Toast.LENGTH_LONG);
+            }else{
+                Tencent.handleResultData(data,new BaseUiListener());
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+    private class BaseUiListener implements IUiListener {
+        @Override
+        public void onComplete(Object arg0) {
+            // TODO Auto-generated method stub
+            if(arg0!=null){
+                Log.i("Tian===>",arg0.toString());
+                org.json.JSONObject jsonObject = (org.json.JSONObject) arg0;
+                try {
+                    String token = jsonObject.getString(com.tencent.connect.common.Constants.PARAM_ACCESS_TOKEN);
+                    String expires = jsonObject.getString(com.tencent.connect.common.Constants.PARAM_EXPIRES_IN);
+                    String openId = jsonObject.getString(com.tencent.connect.common.Constants.PARAM_OPEN_ID);
+                    BmobUser.BmobThirdUserAuth authInfo = new BmobUser.BmobThirdUserAuth(BmobUser.BmobThirdUserAuth.SNS_TYPE_QQ,token, expires,openId);
+                    loginWithAuth(authInfo);
+                } catch (JSONException e) {
+                } catch (org.json.JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
+        @Override
+        public void onError(UiError arg0) {
+            // TODO Auto-generated method stub
+            toast("QQ授权出错："+arg0.errorCode+"--"+arg0.errorDetail);
+        }
+
+        @Override
+        public void onCancel() {
+            // TODO Auto-generated method stub
+            toast("取消qq授权");
+        }
+
+    }
 
 }
